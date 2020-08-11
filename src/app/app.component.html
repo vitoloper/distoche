@@ -1,0 +1,35 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" routerLink="/home">{{title}}</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" routerLink="/home">Home</a>
+        </li>
+
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" routerLink="/beni">Beni Culturali</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav mr-md-2">
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" routerLink="/login">Login</a>
+        </li>
+      </ul>
+
+      <a class="btn btn-outline-primary" routerLink="/signup">Registrati</a>
+     
+    </div>
+  </nav>
+</header>
+
+<!-- The routed views render in the <router-outlet> -->
+<div class="container pt-3">
+  <router-outlet></router-outlet>
+</div>
