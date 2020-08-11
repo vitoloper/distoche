@@ -1,0 +1,61 @@
+<!-- map row -->
+<div class="row">
+  <div class="map-frame">
+    <div id="map"></div>
+  </div>
+</div>
+
+<!-- search, order and filter row -->
+<div class="row mt-2 mb-3">
+  <form class="form-inline mr-auto">
+    <div class="form-group m-2">
+      <label for="orderBy">Ordina per &nbsp;</label>
+      <select class="form-control" id="orderBy">
+        <option>Titolo</option>
+        <option>Descrizione</option>
+        <option>Data creazione</option>
+      </select>
+    </div>
+    <div class="form-check m-2">
+      <input class="form-check-input" type="radio" name="orderRadios" id="orderAsc" value="asc" checked>
+      <label class="form-check-label" for="orderAsc">
+        <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
+      </label>
+    </div>
+    <div class="form-check m-2">
+      <input class="form-check-input" type="radio" name="orderRadios" id="orderDesc" value="desc">
+      <label class="form-check-label" for="orderDesc">
+        <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+      </label>
+    </div>
+  </form>
+
+  <form class="form-inline ml-1">
+    <input class="form-control mr-2" type="text" placeholder="Cerca nel titolo" aria-label="Cerca">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cerca</button>
+  </form>
+</div> <!-- search, order and filter row -->
+
+<!-- cards rows -->
+<div *ngFor="let row of rows" class="row">
+  <div *ngFor="let asset of row" class="col-sm-4">
+    <div class="card m-2 p-1">
+      <img class="card-img-top" src="assets/images/colosseo_esterno-384x310.jpg" alt="Card image caption">
+      <div class="card-body">
+        <h5 class="card-title">{{asset.titolo}}</h5>
+        <p class="card-text">{{asset.desc}}</p>
+      </div>
+    </div>
+  </div>
+</div> <!-- card rows -->
+
+<!-- pagination row -->
+<div class="row m-2">
+  <div class="col"></div>
+  <div class="col text-center">
+    <i class="pointer fa fa-chevron-left mr-3"></i>
+    Page 2 of 5
+    <i class="pointer fa fa-chevron-right ml-3"></i>
+  </div>
+  <div class="col"></div>
+</div>

@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CulturalAssetsComponent } from './cultural-assets/cultural-assets.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CulturalAssetsComponent
   ],
   imports: [
     BrowserModule,

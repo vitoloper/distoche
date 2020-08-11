@@ -1,0 +1,14 @@
+.map-frame {
+  border: 2px solid black;
+  width: 100%;
+  height: 250px;
+}
+
+#map {
+  width: 100%;
+  height: 246px;
+}
+
+.pointer {
+  cursor: pointer;
+}
