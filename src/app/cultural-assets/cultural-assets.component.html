@@ -61,9 +61,14 @@
 <div class="row m-2">
   <div class="col"></div>
   <div class="col text-center">
-    <i class="pointer fa fa-chevron-left mr-3" [hidden]="isPrevPageHidden" (click)="prevPage()"></i>
-    Page {{currentPage}} of {{totalPages}}
-    <i class="pointer fa fa-chevron-right ml-3" [hidden]="isNextPageHidden" (click)="nextPage()"></i>
+    <div [hidden]="totalPages === 0">
+      <i class="pointer fa fa-chevron-left mr-3" [hidden]="isPrevPageHidden" (click)="prevPage()"></i>
+      Page {{currentPage}} of {{totalPages}}
+      <i class="pointer fa fa-chevron-right ml-3" [hidden]="isNextPageHidden" (click)="nextPage()"></i>
+    </div>
+    <div [hidden]="totalPages !== 0">
+      <p>Nessun bene culturale da mostrare</p>
+    </div>
   </div>
   <div class="col"></div>
 </div>
