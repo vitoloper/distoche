@@ -54,6 +54,11 @@ export class CulturalAssetsComponent implements OnInit, AfterViewInit {
     // Retrieve assets on map change
     this.map.on('moveend', () => {
       this.boundaries = this.map.getBounds();
+
+      // Reset pagination
+      this.currentPage = 1;
+      this.offset = 0;
+
       this.getAssets();
     });
 
@@ -123,6 +128,16 @@ export class CulturalAssetsComponent implements OnInit, AfterViewInit {
         }
       );
   } // getAssets
+
+  // Called when searching in asset title
+  searchInName(): void {
+    // Reset pagination
+    this.currentPage = 1;
+    this.offset = 0;
+
+    // get assets
+    this.getAssets();
+  }
 
   nextPage(): void {
     if (this.currentPage >= this.totalPages) return;
