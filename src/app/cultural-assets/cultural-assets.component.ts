@@ -25,6 +25,9 @@ export class CulturalAssetsComponent implements OnInit, AfterViewInit {
   // Name search
   nameSearch = '';
 
+  // Map boundaries
+  boundaries: any;
+
   // Display rows
   rows = [];
 
@@ -37,11 +40,23 @@ export class CulturalAssetsComponent implements OnInit, AfterViewInit {
     this.offset = 0;
     this.isPrevPageHidden = true;
     this.isNextPageHidden = true;
-    this.getAssets();
   }
 
   ngAfterViewInit(): void {
     this.initMap();
+
+    // Initialize boundaries
+    this.boundaries = this.map.getBounds();
+
+    // Get assets
+    this.getAssets();
+
+    // Retrieve assets on map change
+    this.map.on('moveend', () => {
+      this.boundaries = this.map.getBounds();
+      this.getAssets();
+    });
+
   }
 
   /**
@@ -62,7 +77,7 @@ export class CulturalAssetsComponent implements OnInit, AfterViewInit {
   }
 
   getAssets(): void {
-    this.assetService.getAssets(this.nameSearch, this.ordering, this.elementsPerPage, this.offset)
+    this.assetService.getAssets(this.nameSearch, this.boundaries, this.ordering, this.elementsPerPage, this.offset)
       .subscribe(
         (result: any) => {
           // Get cultural assets

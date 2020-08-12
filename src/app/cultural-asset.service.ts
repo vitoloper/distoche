@@ -48,14 +48,21 @@ export class CulturalAssetService {
    * GET beni culturali
    * 
    * @param namequery
+   * @param boundaries
    * @param ordering 
    * @param limit 
    * @param offset
    * 
    */
-  getAssets(namequery: any, ordering: any, limit: number, offset: number): Observable<any> {
+  getAssets(namequery: any, boundaries: any, ordering: any, limit: number, offset: number): Observable<any> {
+    // Get map bounding box coordinates
+    let nlat = Number((boundaries._northEast.lat).toFixed(3));
+    let slat = Number((boundaries._southWest.lat).toFixed(3));
+    let elon = Number((boundaries._northEast.lng).toFixed(3));
+    let wlon = Number((boundaries._southWest.lng).toFixed(3));
+
     return this.http
-      .get<any>(`${this.assetsUrl}?namequery=${namequery}&orderby=${ordering.field}&direction=${ordering.direction}&limit=${limit}&offset=${offset}`, this.httpOptions)
+      .get<any>(`${this.assetsUrl}?nlat=${nlat}&slat=${slat}&elon=${elon}&wlon=${wlon}&namequery=${namequery}&orderby=${ordering.field}&direction=${ordering.direction}&limit=${limit}&offset=${offset}`, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
