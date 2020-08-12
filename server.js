@@ -26,8 +26,9 @@ var distDir = __dirname + "/dist/distoche";
 app.use(express.static(distDir));
 
 // Routes
+require('./backend/routes/asset.routes')(app);
 
-// Initialize the app.
+// Initialize the app
 var server = app.listen(process.env.PORT || 3000, function () {
   var port = server.address().port;
   logger.info(`App running on port ${port}`);
