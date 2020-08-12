@@ -7,34 +7,41 @@
 
 <!-- search, order and filter row -->
 <div class="row mt-2 mb-3">
-  <form class="form-inline mr-auto">
+  <form class="form-inline mr-auto" #orderForm="ngForm">
+    <!-- select (order by) -->
     <div class="form-group m-2">
       <label for="orderBy">Ordina per &nbsp;</label>
-      <select class="form-control" id="orderBy">
-        <option>Titolo</option>
-        <option>Descrizione</option>
-        <option>Data creazione</option>
+      <select class="form-control" [(ngModel)]="ordering.field" (change)="getAssets()" id="orderBy" name="orderBy"
+        #orderBy="ngModel">
+        <option value="created_at">Data creazione</option>
+        <option value="modified_at">Data ultima modifica</option>
+        <option value="nome">Nome</option>
       </select>
     </div>
+    <!-- radio buttons (asc, desc) -->
     <div class="form-check m-2">
-      <input class="form-check-input" type="radio" name="orderRadios" id="orderAsc" value="asc" checked>
-      <label class="form-check-label" for="orderAsc">
-        <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
-      </label>
-    </div>
-    <div class="form-check m-2">
-      <input class="form-check-input" type="radio" name="orderRadios" id="orderDesc" value="desc">
+      <input class="form-check-input" type="radio" name="orderRadios" id="orderDesc" value="desc"
+        [(ngModel)]="ordering.direction" (change)="getAssets()">
       <label class="form-check-label" for="orderDesc">
         <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
       </label>
     </div>
+    <div class="form-check m-2">
+      <input class="form-check-input" type="radio" name="orderRadios" id="orderAsc" value="asc"
+        [(ngModel)]="ordering.direction" (change)="getAssets()">
+      <label class="form-check-label" for="orderAsc">
+        <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
+      </label>
+    </div>
   </form>
-
-  <form class="form-inline ml-1">
-    <input class="form-control mr-2" type="text" placeholder="Cerca nel titolo" aria-label="Cerca">
+  <!-- name search -->
+  <form class="form-inline ml-1" (ngSubmit)="getAssets()" #searchForm="ngForm">
+    <input class="form-control mr-2" type="text" placeholder="Cerca nel nome" aria-label="Cerca" id="nameText"
+      name="nameText" [(ngModel)]="nameSearch" #nameText="ngModel">
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cerca</button>
   </form>
-</div> <!-- search, order and filter row -->
+</div>
+<!-- END search, order and filter row -->
 
 <!-- cards rows -->
 <div *ngFor="let row of rows" class="row">
@@ -42,20 +49,21 @@
     <div class="card m-2 p-1">
       <img class="card-img-top" src="assets/images/colosseo_esterno-384x310.jpg" alt="Card image caption">
       <div class="card-body">
-        <h5 class="card-title">{{asset.titolo}}</h5>
+        <h5 class="card-title">{{asset.nome}}</h5>
         <p class="card-text">{{asset.desc}}</p>
       </div>
     </div>
   </div>
-</div> <!-- card rows -->
+</div>
+<!-- END card rows -->
 
 <!-- pagination row -->
 <div class="row m-2">
   <div class="col"></div>
   <div class="col text-center">
-    <i class="pointer fa fa-chevron-left mr-3"></i>
-    Page 2 of 5
-    <i class="pointer fa fa-chevron-right ml-3"></i>
+    <i class="pointer fa fa-chevron-left mr-3" [hidden]="isPrevPageHidden" (click)="prevPage()"></i>
+    Page {{currentPage}} of {{totalPages}}
+    <i class="pointer fa fa-chevron-right ml-3" [hidden]="isNextPageHidden" (click)="nextPage()"></i>
   </div>
   <div class="col"></div>
 </div>

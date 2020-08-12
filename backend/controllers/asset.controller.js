@@ -13,13 +13,15 @@ exports.get = (req, res) => {
     orderby: null,
     direction: null,
     limit: null,
-    offset: null
+    offset: null,
+    namequery: null
   };
 
   var orderby = req.query.orderby;
   var direction = req.query.direction;
   var limit = req.query.limit;
   var offset = req.query.offset;
+  var namequery = req.query.namequery; 
 
   // ordering options
   if (orderby) options.orderby = orderby;
@@ -42,6 +44,8 @@ exports.get = (req, res) => {
     options.limit = parseInt(limit);
     options.offset = parseInt(offset);
   }
+
+  if (namequery) options.namequery = namequery;
 
   AssetService.get(options, (err, data) => {
     if (err) {

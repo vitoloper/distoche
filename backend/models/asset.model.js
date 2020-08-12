@@ -43,11 +43,21 @@ Asset.get = (options, result) => {
 
   var query;
 
-  // Descending order or ascending order
-  if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
-    query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 ORDER BY ?? DESC LIMIT ? OFFSET ?', [orderby, limit, offset]);
+  if (options.namequery !== null) {
+    var namequery = '%' + options.namequery + '%';
+    // Descending order or ascending order
+    if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
+      query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 AND `nome` LIKE ? ORDER BY ?? DESC LIMIT ? OFFSET ?', [namequery, orderby, limit, offset]);
+    } else {
+      query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 AND `nome` LIKE ? ORDER BY ?? ASC LIMIT ? OFFSET ?', [namequery, orderby, limit, offset]);
+    }
   } else {
-    query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 ORDER BY ?? ASC LIMIT ? OFFSET ?', [orderby, limit, offset]);
+    // Descending order or ascending order
+    if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
+      query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 ORDER BY ?? DESC LIMIT ? OFFSET ?', [orderby, limit, offset]);
+    } else {
+      query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 ORDER BY ?? ASC LIMIT ? OFFSET ?', [orderby, limit, offset]);
+    }
   }
 
   // Get a connection from the pool
@@ -57,11 +67,19 @@ Asset.get = (options, result) => {
     // Begin a transaction to get total number and data
     connection.beginTransaction(function (err) {
       if (err) {
-        connection.release(); 
+        connection.release();
         return result(err, null);
       };
 
-      connection.query('SELECT COUNT(*) AS total FROM bene WHERE visible = 1', (err, res) => {
+      var countQuery;
+      if (options.namequery !== null) {
+        var namequery = '%' + options.namequery + '%';
+        countQuery = mysql.format('SELECT COUNT(*) AS total FROM bene WHERE visible = 1 AND nome LIKE ?', [namequery]);
+      } else {
+        countQuery = mysql.format('SELECT COUNT(*) AS total FROM bene WHERE visible = 1');
+      }
+
+      connection.query(countQuery, (err, res) => {
         if (err) {
           connection.release();
           return result(err, null);
