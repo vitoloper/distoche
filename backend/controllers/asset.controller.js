@@ -14,14 +14,19 @@ exports.get = (req, res) => {
     direction: null,
     limit: null,
     offset: null,
-    namequery: null
+    namequery: null,
+    boundaries: { nlat: null, slat: null, elon: null, wlon: null }
   };
 
   var orderby = req.query.orderby;
   var direction = req.query.direction;
   var limit = req.query.limit;
   var offset = req.query.offset;
-  var namequery = req.query.namequery; 
+  var namequery = req.query.namequery;
+  var nlat = req.query.nlat;
+  var slat = req.query.slat;
+  var elon = req.query.elon;
+  var wlon = req.query.wlon;
 
   // ordering options
   if (orderby) options.orderby = orderby;
@@ -45,13 +50,34 @@ exports.get = (req, res) => {
     options.offset = parseInt(offset);
   }
 
+  // Search query string in cultural asset name
   if (namequery) options.namequery = namequery;
+
+  // Map boundaries can be all set or none set
+  if (!nlat && !slat && !elon && !wlon) {
+    options.nlat = null;
+    options.slat = null;
+    options.elon = null;
+    options.wlon = null;
+  } else if (nlat && slat && elon && wlon) {
+    // Return error if any of the boundaries parameters is not valid
+    if (isNaN(nlat) || isNaN(slat) || isNaN(elon) || isNaN(wlon)) {
+      return res.status(400).json({ message: 'Invalid map boundaries parameter(s) '});
+    }
+    // Set boundaries in options object
+    options.nlat = parseFloat(nlat);
+    options.slat = parseFloat(slat);
+    options.elon = parseFloat(elon);
+    options.wlon = parseFloat(wlon);
+  } else {
+    return res.status(400).json({ message: 'Missing map boundaries parameter(s)' })
+  }
 
   AssetService.get(options, (err, data) => {
     if (err) {
-      return res.status(500).json({message: err.message || 'Error retrieving assets'});
+      return res.status(500).json({ message: err.message || 'Error retrieving assets' });
     }
-    
+
     return res.json(data);
   });
 

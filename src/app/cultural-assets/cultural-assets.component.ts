@@ -88,6 +88,11 @@ export class CulturalAssetsComponent implements OnInit, AfterViewInit {
           // Get cultural assets
           this.assets = result.data;
 
+          // Add markers to map
+          for (let i = 0; i < this.assets.length; i++) {
+            L.marker([this.assets[i].lat, this.assets[i].lon]).addTo(this.map).bindPopup(this.assets[i].nome);
+          }
+
           // Arrange data in multiple rows to display it in a grid
           let rows = [];
           let currentRow = -1;

@@ -25,6 +25,7 @@ const Asset = function (asset) {
  */
 Asset.get = (options, result) => {
   var orderby, direction, limit, offset;
+  var nlat, slat, elon, wlon;
 
   if (options.orderby !== null) {
     orderby = options.orderby;
@@ -33,6 +34,7 @@ Asset.get = (options, result) => {
     orderby = 'created_at';
   }
 
+  // Check limit and offset options and set default values if any of them is null
   if (options.limit !== null && options.offset !== null) {
     limit = options.limit;
     offset = options.offset;
@@ -41,22 +43,37 @@ Asset.get = (options, result) => {
     offset = 0;
   }
 
+  // Check map boundaries options and set default values if any of them is null
+  if (options.nlat !== null && options.slat !== null && options.elon !== null && options.wlon !== null) {
+    nlat = options.nlat;
+    slat = options.slat;
+    elon = options.elon;
+    wlon = options.wlon;
+  } else {
+    nlat = 90;
+    slat = -90;
+    elon = 180;
+    wlon = -180;
+  }
+
+  logger.log('info', `Map boundaries - nlat:${nlat}, slat:${slat}, elon:${elon}, wlon:${wlon}`);
+
   var query;
 
   if (options.namequery !== null) {
     var namequery = '%' + options.namequery + '%';
     // Descending order or ascending order
     if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
-      query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 AND `nome` LIKE ? ORDER BY ?? DESC LIMIT ? OFFSET ?', [namequery, orderby, limit, offset]);
+      query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 AND lat >= ? AND lat <= ? AND lon >= ? AND lon <= ? AND `nome` LIKE ? ORDER BY ?? DESC LIMIT ? OFFSET ?', [slat, nlat, wlon, elon, namequery, orderby, limit, offset]);
     } else {
-      query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 AND `nome` LIKE ? ORDER BY ?? ASC LIMIT ? OFFSET ?', [namequery, orderby, limit, offset]);
+      query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 AND lat >= ? AND lat <= ? AND lon >= ? AND lon <= ? AND `nome` LIKE ? ORDER BY ?? ASC LIMIT ? OFFSET ?', [slat, nlat, wlon, elon, namequery, orderby, limit, offset]);
     }
   } else {
     // Descending order or ascending order
     if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
-      query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 ORDER BY ?? DESC LIMIT ? OFFSET ?', [orderby, limit, offset]);
+      query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 AND lat >= ? AND lat <= ? AND lon >= ? AND lon <= ? ORDER BY ?? DESC LIMIT ? OFFSET ?', [slat, nlat, wlon, elon, orderby, limit, offset]);
     } else {
-      query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 ORDER BY ?? ASC LIMIT ? OFFSET ?', [orderby, limit, offset]);
+      query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 AND lat >= ? AND lat <= ? AND lon >= ? AND lon <= ? ORDER BY ?? ASC LIMIT ? OFFSET ?', [slat, nlat, wlon, elon, orderby, limit, offset]);
     }
   }
 
@@ -74,9 +91,9 @@ Asset.get = (options, result) => {
       var countQuery;
       if (options.namequery !== null) {
         var namequery = '%' + options.namequery + '%';
-        countQuery = mysql.format('SELECT COUNT(*) AS total FROM bene WHERE visible = 1 AND nome LIKE ?', [namequery]);
+        countQuery = mysql.format('SELECT COUNT(*) AS total FROM bene WHERE visible = 1 AND lat >= ? AND lat <= ? AND lon >= ? AND lon <= ? AND nome LIKE ?', [slat, nlat, wlon, elon, namequery]);
       } else {
-        countQuery = mysql.format('SELECT COUNT(*) AS total FROM bene WHERE visible = 1');
+        countQuery = mysql.format('SELECT COUNT(*) AS total FROM bene WHERE visible = 1 AND lat >= ? AND lat <= ? AND lon >= ? AND lon <= ?', [slat, nlat, wlon, elon]);
       }
 
       connection.query(countQuery, (err, res) => {
