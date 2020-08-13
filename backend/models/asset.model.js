@@ -56,7 +56,7 @@ Asset.get = (options, result) => {
     wlon = -180;
   }
 
-  logger.log('info', `Map boundaries - nlat:${nlat}, slat:${slat}, elon:${elon}, wlon:${wlon}`);
+  // logger.log('info', `asset.model.js - get - map boundaries - nlat:${nlat}, slat:${slat}, elon:${elon}, wlon:${wlon}`);
 
   var query;
 

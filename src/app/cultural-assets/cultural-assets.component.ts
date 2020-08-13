@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterContentInit, AfterViewInit } from '@angular/core';
 import { CulturalAssetService } from '../cultural-asset.service';
 import * as L from 'leaflet';
+import "leaflet/dist/images/marker-shadow.png";
 
 @Component({
   selector: 'app-cultural-assets',
