@@ -41,6 +41,8 @@ yarn-error.log
 testem.log
 /typings
 /logs
+/uploads/*
+!uploads/.gitkeep
 
 # System Files
 .DS_Store
