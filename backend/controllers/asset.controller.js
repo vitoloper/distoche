@@ -15,7 +15,7 @@ exports.get = (req, res) => {
     limit: null,
     offset: null,
     namequery: null,
-    boundaries: { nlat: null, slat: null, elon: null, wlon: null }
+    nlat: null, slat: null, elon: null, wlon: null
   };
 
   var orderby = req.query.orderby;
@@ -62,7 +62,7 @@ exports.get = (req, res) => {
   } else if (nlat && slat && elon && wlon) {
     // Return error if any of the boundaries parameters is not valid
     if (isNaN(nlat) || isNaN(slat) || isNaN(elon) || isNaN(wlon)) {
-      return res.status(400).json({ message: 'Invalid map boundaries parameter(s) '});
+      return res.status(400).json({ message: 'Invalid map boundaries parameter(s) ' });
     }
     // Set boundaries in options object
     options.nlat = parseFloat(nlat);
