@@ -26,6 +26,7 @@ var distDir = __dirname + "/dist/distoche";
 app.use(express.static(distDir));
 
 // Routes
+require('./backend/routes/image.routes')(app);
 require('./backend/routes/asset.routes')(app);
 
 // Initialize the app
