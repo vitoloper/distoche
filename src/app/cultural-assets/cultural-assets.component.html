@@ -70,7 +70,8 @@
 <div *ngFor="let row of rows" class="row">
   <div *ngFor="let asset of row" class="col-sm-4">
     <div class="card m-2 p-1">
-      <img class="card-img-top" [src]="asset.cover_img_url ? asset.cover_img_url : placeholderImgUrl" alt="Card image caption">
+      <img class="card-img-top" [src]="asset.cover_img_url"
+        onError="this.src = 'assets/images/not-available-360x270.png'" alt="Card image caption">
       <div class="card-body">
         <h5 class="card-title">{{asset.nome}}</h5>
         <p class="card-text">{{asset.desc}}</p>
