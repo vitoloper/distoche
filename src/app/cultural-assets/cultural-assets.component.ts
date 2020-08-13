@@ -19,6 +19,7 @@ export class CulturalAssetsComponent implements OnInit, AfterViewInit {
   offset: number;
   isPrevPageHidden: boolean;
   isNextPageHidden: boolean;
+  totalElements: number;
 
   // Order
   ordering = { field: 'created_at', direction: 'desc' };
@@ -26,8 +27,9 @@ export class CulturalAssetsComponent implements OnInit, AfterViewInit {
   // Name search
   nameSearch = '';
 
-  // Map boundaries
+  // Map boundaries and markers
   boundaries: any;
+  markers = [];
 
   // Display rows
   rows = [];
@@ -89,9 +91,18 @@ export class CulturalAssetsComponent implements OnInit, AfterViewInit {
           // Get cultural assets
           this.assets = result.data;
 
+          // Remove old markers from map
+          for (let i = 0; i < this.markers.length; i++) {
+            this.map.removeLayer(this.markers[i]);
+          }
+
+          this.markers = [];
+
           // Add markers to map
           for (let i = 0; i < this.assets.length; i++) {
-            L.marker([this.assets[i].lat, this.assets[i].lon]).addTo(this.map).bindPopup(this.assets[i].nome);
+            let marker = new L.marker([this.assets[i].lat, this.assets[i].lon]);
+            this.markers.push(marker);
+            marker.addTo(this.map).bindPopup(this.assets[i].nome);
           }
 
           // Arrange data in multiple rows to display it in a grid
@@ -111,6 +122,9 @@ export class CulturalAssetsComponent implements OnInit, AfterViewInit {
           }
 
           this.rows = rows;
+
+          // Show number of total elements on page
+          this.totalElements = result.total;
 
           // Update pagination values
           this.totalPages = Math.ceil(result.total / this.elementsPerPage);

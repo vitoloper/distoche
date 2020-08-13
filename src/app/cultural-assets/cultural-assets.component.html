@@ -43,6 +43,12 @@
 </div>
 <!-- END search, order and filter row -->
 
+<!-- total number info row -->
+<div class="row">
+  <p class="text-secondary ml-2">Numero di beni culturali trovati: {{totalElements}}</p>
+</div>
+<!-- END total number info row -->
+
 <!-- cards rows -->
 <div *ngFor="let row of rows" class="row">
   <div *ngFor="let asset of row" class="col-sm-4">
