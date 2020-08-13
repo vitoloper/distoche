@@ -11,6 +11,7 @@ import "leaflet/dist/images/marker-shadow.png";
 export class CulturalAssetsComponent implements OnInit, AfterViewInit {
   assets: any[];
   private map;
+  isErrorAlertHidden;
 
   // Pagination
   totalPages: number;
@@ -43,6 +44,7 @@ export class CulturalAssetsComponent implements OnInit, AfterViewInit {
     this.offset = 0;
     this.isPrevPageHidden = true;
     this.isNextPageHidden = true;
+    this.isErrorAlertHidden = true;
   }
 
   ngAfterViewInit(): void {
@@ -85,6 +87,8 @@ export class CulturalAssetsComponent implements OnInit, AfterViewInit {
   }
 
   getAssets(): void {
+    this.isErrorAlertHidden = true;   // Hide error alert
+
     this.assetService.getAssets(this.nameSearch, this.boundaries, this.ordering, this.elementsPerPage, this.offset)
       .subscribe(
         (result: any) => {
@@ -144,6 +148,7 @@ export class CulturalAssetsComponent implements OnInit, AfterViewInit {
           }
         },
         (err) => {
+          this.isErrorAlertHidden = false;  // Show error alert
           console.log(err);
         }
       );

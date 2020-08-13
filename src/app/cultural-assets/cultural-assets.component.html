@@ -44,10 +44,18 @@
 <!-- END search, order and filter row -->
 
 <!-- total number info row -->
-<div class="row">
+<div class="row" [hidden]="!isErrorAlertHidden">
   <p class="text-secondary ml-2">Numero di beni culturali trovati: {{totalElements}}</p>
 </div>
 <!-- END total number info row -->
+
+<!-- alert row -->
+<div class="row justify-content-center" [hidden]="isErrorAlertHidden">
+  <div class="alert alert-danger" role="alert">
+    Impossibile ottenere un elenco di beni culturali. Provare a ricaricare la pagina.
+  </div>
+</div>
+<!-- END alert row -->
 
 <!-- pagination row -->
 <div class="row m-2">
