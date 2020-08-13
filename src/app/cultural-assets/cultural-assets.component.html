@@ -49,6 +49,23 @@
 </div>
 <!-- END total number info row -->
 
+<!-- pagination row -->
+<div class="row m-2">
+  <div class="col"></div>
+  <div class="col text-center">
+    <div [hidden]="totalPages === 0">
+      <p>
+        <i class="pointer fa fa-chevron-left mr-3" [hidden]="isPrevPageHidden" (click)="prevPage()"></i>
+        Pagina {{currentPage}} di {{totalPages}}
+        <i class="pointer fa fa-chevron-right ml-3" [hidden]="isNextPageHidden" (click)="nextPage()"></i>
+      </p>
+    </div>
+    <div [hidden]="totalPages !== 0">
+    </div>
+  </div>
+  <div class="col"></div>
+</div>
+
 <!-- cards rows -->
 <div *ngFor="let row of rows" class="row">
   <div *ngFor="let asset of row" class="col-sm-4">
@@ -68,9 +85,11 @@
   <div class="col"></div>
   <div class="col text-center">
     <div [hidden]="totalPages === 0">
-      <i class="pointer fa fa-chevron-left mr-3" [hidden]="isPrevPageHidden" (click)="prevPage()"></i>
-      Page {{currentPage}} of {{totalPages}}
-      <i class="pointer fa fa-chevron-right ml-3" [hidden]="isNextPageHidden" (click)="nextPage()"></i>
+      <p>
+        <i class="pointer fa fa-chevron-left mr-3" [hidden]="isPrevPageHidden" (click)="prevPage()"></i>
+        Pagina {{currentPage}} di {{totalPages}}
+        <i class="pointer fa fa-chevron-right ml-3" [hidden]="isNextPageHidden" (click)="nextPage()"></i>
+      </p>
     </div>
     <div [hidden]="totalPages !== 0">
       <p>Nessun bene culturale da mostrare</p>
