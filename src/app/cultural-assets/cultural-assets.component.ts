@@ -11,6 +11,7 @@ import "leaflet/dist/images/marker-shadow.png";
 export class CulturalAssetsComponent implements OnInit, AfterViewInit {
   assets: any[];
   private map;
+  placeholderImgUrl = 'assets/images/not-available-300x217.png';
 
   // Pagination
   totalPages: number;
