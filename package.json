@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "npm run build && node server.js",
     "nodemon-server": "./node_modules/nodemon/bin/nodemon.js server.js",
+    "nodemon-server-debug": "./node_modules/nodemon/bin/nodemon.js --inspect server.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
