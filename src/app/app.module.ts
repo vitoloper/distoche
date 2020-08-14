@@ -7,12 +7,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CulturalAssetsComponent } from './cultural-assets/cultural-assets.component';
 import { CulturalAssetDetailComponent } from './cultural-asset-detail/cultural-asset-detail.component';
+import { StoryDetailComponent } from './story-detail/story-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CulturalAssetsComponent,
-    CulturalAssetDetailComponent
+    CulturalAssetDetailComponent,
+    StoryDetailComponent
   ],
   imports: [
     BrowserModule,
