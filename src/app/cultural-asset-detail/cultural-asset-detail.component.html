@@ -9,7 +9,8 @@
   <div class="col-sm-2">
     <p class="small"><i class="fa fa-globe" title="Coordinate" aria-hidden="true"></i>&nbsp;{{asset?.lat}}°,
       {{asset?.lon}}°</p>
-    <p class="small"><i class="fa fa-pencil" title="Data creazione" aria-hidden="true"></i>&nbsp;{{asset?.created_at | date: 'dd-MM-yyyy'}}
+    <p class="small"><i class="fa fa-pencil" title="Data creazione"
+        aria-hidden="true"></i>&nbsp;{{asset?.created_at | date: 'dd-MM-yyyy'}}
     </p>
     <p class="small"><i class="fa fa-clock-o" title="Data ultima modifica"
         aria-hidden="true"></i>&nbsp;{{asset?.modified_at | date: 'dd-MM-yyyy'}}</p>
@@ -100,7 +101,7 @@
 <!-- cards rows -->
 <div *ngFor="let row of rows" class="row">
   <div *ngFor="let story of row" class="col-sm-4">
-    <div class="card m-2 p-1 pointer" [routerLink]="'/storie/'+story.id">
+    <div class="card m-2 p-1 pointer shadow-sm" [routerLink]="'/storie/'+story.id">
       <img class="card-img-top" [src]="story.cover_img_url"
         onError="this.src = 'assets/images/not-available-360x270.png'" alt="Card image caption">
       <div class="card-body">
