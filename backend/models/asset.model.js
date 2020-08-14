@@ -91,9 +91,9 @@ Asset.get = (options, result) => {
       var countQuery;
       if (options.namequery !== null) {
         var namequery = '%' + options.namequery + '%';
-        countQuery = mysql.format('SELECT COUNT(*) AS total FROM bene WHERE visible = 1 AND lat >= ? AND lat <= ? AND lon >= ? AND lon <= ? AND nome LIKE ?', [slat, nlat, wlon, elon, namequery]);
+        countQuery = mysql.format('SELECT COUNT(id) AS total FROM bene WHERE visible = 1 AND lat >= ? AND lat <= ? AND lon >= ? AND lon <= ? AND nome LIKE ?', [slat, nlat, wlon, elon, namequery]);
       } else {
-        countQuery = mysql.format('SELECT COUNT(*) AS total FROM bene WHERE visible = 1 AND lat >= ? AND lat <= ? AND lon >= ? AND lon <= ?', [slat, nlat, wlon, elon]);
+        countQuery = mysql.format('SELECT COUNT(id) AS total FROM bene WHERE visible = 1 AND lat >= ? AND lat <= ? AND lon >= ? AND lon <= ?', [slat, nlat, wlon, elon]);
       }
 
       connection.query(countQuery, (err, res) => {
