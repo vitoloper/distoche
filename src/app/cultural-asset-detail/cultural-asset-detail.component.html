@@ -1,4 +1,5 @@
-<div class="row">
+<!-- asset row -->
+<div class="row" [hidden]="!isAssetErrorAlertHidden">
   <div class="col-sm-4"><img [src]="asset?.cover_img_url" onError="this.src = 'assets/images/not-available-360x270.png'"
       alt="Immagine bene culturale" class="img-fluid"></div>
   <div class="col-sm-6">
@@ -16,6 +17,15 @@
     </p>
   </div>
 </div>
+<!-- END asset row -->
+
+<!-- asset alert row -->
+<div class="row justify-content-center" [hidden]="isAssetErrorAlertHidden">
+  <div class="alert alert-danger" role="alert">
+    Impossibile ottenere informazioni sul bene culturale. Provare a ricaricare la pagina.
+  </div>
+</div>
+<!-- END asset alert row -->
 
 <!-- search, order and filter row -->
 <div class="row mt-2 mb-3">
@@ -61,13 +71,13 @@
 </div>
 <!-- END total number info row -->
 
-<!-- alert row -->
+<!-- stories alert row -->
 <div class="row justify-content-center" [hidden]="isErrorAlertHidden">
   <div class="alert alert-danger" role="alert">
     Impossibile ottenere un elenco di storie. Provare a ricaricare la pagina.
   </div>
 </div>
-<!-- END alert row -->
+<!-- END stories alert row -->
 
 <!-- pagination row -->
 <div class="row m-2">

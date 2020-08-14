@@ -12,6 +12,7 @@ export class CulturalAssetDetailComponent implements OnInit {
   assetId;
   asset;
   stories: any[];
+  isAssetErrorAlertHidden;
   isErrorAlertHidden;
 
   // Pagination
@@ -43,6 +44,7 @@ export class CulturalAssetDetailComponent implements OnInit {
     this.offset = 0;
     this.isPrevPageHidden = true;
     this.isNextPageHidden = true;
+    this.isAssetErrorAlertHidden = true;
     this.isErrorAlertHidden = true;
 
     // Get cultural asset detail
@@ -53,11 +55,14 @@ export class CulturalAssetDetailComponent implements OnInit {
   }
 
   getAssetDetail(): void {
+    this.isAssetErrorAlertHidden = true;  // Hide asset error alert
+
     this.assetService.getAssetDetail(this.assetId)
       .subscribe(
         (result) => {
           this.asset = result[0];
         }, (err) => {
+          this.isAssetErrorAlertHidden = false;
           console.log(err);
         }
       );
