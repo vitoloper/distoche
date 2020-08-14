@@ -134,4 +134,25 @@ Asset.get = (options, result) => {
   }); // getConnection
 }; // Asset.get
 
+/**
+ * Get asset detail from db
+ * 
+ * @param {*} id 
+ * @param {*} result
+ * 
+ */
+Asset.getOne = (id, result) => {
+  sql.query('SELECT B.id, B.created_at, B.modified_at, B.nome, B.lat, B.lon, B.descr, B.cover_img_url, B.visible, U.username AS owner_username FROM bene B JOIN utente U ON B.owner = U.id WHERE B.id = ?', id, (err, res) => {
+    if (err) {
+      logger.error(err);
+      return result(err, null);
+    }
+
+    if (res.length > 0)
+      logger.info(`asset.model.js - getOne - asset id: ${res[0].id}`);
+
+    result(null, res);
+  });
+}
+
 module.exports = Asset;

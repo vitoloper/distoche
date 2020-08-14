@@ -66,4 +66,10 @@ export class CulturalAssetService {
       .pipe(catchError(this.handleError));
   }
 
+  getAssetDetail(id: any): Observable<any> {
+    return this.http
+      .get<any>(`${this.assetsUrl}/${id}`, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
 }

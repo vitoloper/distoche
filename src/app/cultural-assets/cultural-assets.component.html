@@ -77,7 +77,7 @@
 <!-- cards rows -->
 <div *ngFor="let row of rows" class="row">
   <div *ngFor="let asset of row" class="col-sm-4">
-    <div class="card m-2 p-1">
+    <div class="card m-2 p-1 pointer" [routerLink]="'/beni/'+asset.id">
       <img class="card-img-top" [src]="asset.cover_img_url"
         onError="this.src = 'assets/images/not-available-360x270.png'" alt="Card image caption">
       <div class="card-body">

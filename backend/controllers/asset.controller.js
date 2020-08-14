@@ -82,3 +82,32 @@ exports.get = (req, res) => {
   });
 
 }
+
+/**
+ * GET bene culturale (detail)
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ */
+exports.getOne = (req, res) => {
+  var id = req.params.id;
+
+  if (!id) {
+    return res.status(400).json({ message: 'id required' });
+  }
+
+  if (isNaN(id)) {
+    return res.status(400).json({ message: 'Invalid id' });
+  }
+
+  id = parseInt(id);
+
+  AssetService.getOne(id, (err, data) => {
+    if (err) {
+      return res.status(500).json({ message: err.message || 'Error retrieving asset' });
+    }
+
+    return res.json(data);
+  });
+}
