@@ -76,13 +76,18 @@
 
 <!-- cards rows -->
 <div *ngFor="let row of rows" class="row">
-  <div *ngFor="let asset of row" class="col-sm-4">
+  <div *ngFor="let asset of row" class="col-sm-4 d-flex align-items-stretch">
     <div class="card m-2 p-1 pointer shadow-sm" [routerLink]="'/beni/'+asset.id">
-      <img class="card-img-top" [src]="asset.cover_img_url"
+      <img class="card-img-top border" [src]="asset.cover_img_url"
         onError="this.src = 'assets/images/not-available-360x270.png'" alt="Card image caption">
       <div class="card-body">
-        <h5 class="card-title">{{asset.nome}}</h5>
-        <p class="card-text">{{asset.descr}}</p>
+        <h5 class="card-title text-truncate" [title]="asset.nome">{{asset.nome}}</h5>
+        <p class="card-text line-clamp-3">{{asset.descr || 'Nessuna descrizione disponibile.'}}</p>
+      </div>
+      <div class="card-footer small text-muted">
+        <span><i class="fa fa-clock-o" title="Data ultima modifica"
+            aria-hidden="true"></i>&nbsp;{{(asset?.modified_at | date: 'dd-MM-yyyy') || 'n.d.'}}
+        </span>
       </div>
     </div>
   </div>
