@@ -9,6 +9,7 @@ import { catchError, retry } from 'rxjs/operators';
 export class StoryService {
 
   assetsUrl = '/api/assets';
+  storiesUrl = '/api/stories';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -44,10 +45,32 @@ export class StoryService {
     return throwError(userMessage);
   };
 
+  /**
+   * Get asset stories
+   * 
+   * @param id 
+   * @param titlequery 
+   * @param ordering 
+   * @param limit 
+   * @param offset 
+   * 
+   */
   getAssetStories(id: any, titlequery: any, ordering: any, limit: number, offset: number): Observable<any> {
     return this.http
       .get<any>(`${this.assetsUrl}/${id}/stories?titlequery=${titlequery}&orderby=${ordering.field}&direction=${ordering.direction}&limit=${limit}&offset=${offset}`, this.httpOptions)
       .pipe(catchError(this.handleError));    
+  }
+
+  /**
+   * Get story detail
+   * 
+   * @param id 
+   * 
+   */
+  getStoryDetail(id: any): Observable<any> {
+    return this.http
+      .get<any>(`${this.storiesUrl}/${id}`, this.httpOptions)
+      .pipe(catchError(this.handleError));
   }
 
 }

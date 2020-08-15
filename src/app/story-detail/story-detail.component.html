@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" [hidden]="!isErrorAlertHidden">
   <div class="col-sm-4"><img [src]="story?.cover_img_url" onError="this.src = 'assets/images/not-available-360x270.png'"
       alt="Immagine storia" class="img-fluid border p-1"></div>
   <div class="col-sm-6">
@@ -22,9 +22,17 @@
   </div>
 </div>
 
+<!-- asset alert row -->
+<div class="row justify-content-center" [hidden]="isErrorAlertHidden">
+  <div class="alert alert-danger" role="alert">
+    Impossibile ottenere informazioni sulla storia. Provare a ricaricare la pagina.
+  </div>
+</div>
+<!-- END asset alert row -->
+
 <!-- content -->
 <!-- If you want a more advanced configuration: https://www.intricatecloud.io/2019/10/using-angular-innerhtml-to-display-user-generated-content-without-sacrificing-security/ -->
-<div id="content" class="mt-3 p-2 border rounded shadow">
-  <div [innerHtml]="contenuto"></div>
+<div id="content" class="mt-3 p-3 border rounded shadow" [hidden]="!isErrorAlertHidden">
+  <div [innerHtml]="story?.contenuto"></div>
 </div>
 <!-- END content -->

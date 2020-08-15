@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
+import { StoryService } from '../story.service';
 
 @Component({
   selector: 'app-story-detail',
@@ -6,13 +8,32 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./story-detail.component.css']
 })
 export class StoryDetailComponent implements OnInit {
+  storyId;
   story;
   contenuto;
+  isErrorAlertHidden = true;
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private storyService: StoryService) { }
 
   ngOnInit(): void {
-    this.contenuto = '<h2 class="text-center">Storia numero uno</h2><h5 class="text-center">Sottotitolo</h5><p>Paragrafo 1</p><p class="text-success">Paragrafo 2</p><ul><li>Uno</li><li>Due</li><li>Tre</li></ul>';
+    this.storyId = this.route.snapshot.paramMap.get('id');
+
+    // Get story detail
+    this.getStoryDetail();
+  }
+
+  private getStoryDetail(): void {
+    this.isErrorAlertHidden = true;
+
+    this.storyService.getStoryDetail(this.storyId)
+      .subscribe(
+        (result) => {
+          this.story = result[0];
+        }, (err) => {
+          this.isErrorAlertHidden = false;
+          console.log(err);
+        }
+      );
   }
 
 }
