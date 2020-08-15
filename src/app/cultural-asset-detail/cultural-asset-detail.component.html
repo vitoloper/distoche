@@ -1,7 +1,7 @@
 <!-- asset row -->
 <div class="row" [hidden]="!isAssetErrorAlertHidden">
   <div class="col-sm-4"><img [src]="asset?.cover_img_url" onError="this.src = 'assets/images/not-available-360x270.png'"
-      alt="Immagine bene culturale" class="img-fluid"></div>
+      alt="Immagine bene culturale" class="img-fluid border p-1"></div>
   <div class="col-sm-6">
     <h5>{{asset?.nome}}</h5>
     <p>{{asset?.descr || 'Nessuna descrizione disponibile.'}}</p>

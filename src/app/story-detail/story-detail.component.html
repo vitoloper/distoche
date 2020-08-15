@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-sm-4"><img [src]="story?.cover_img_url" onError="this.src = 'assets/images/not-available-360x270.png'"
-      alt="Immagine storia" class="img-fluid"></div>
+      alt="Immagine storia" class="img-fluid border p-1"></div>
   <div class="col-sm-6">
     <h5>{{story?.titolo}}</h5>
     <p>{{story?.descr || 'Nessuna descrizione disponibile.'}}</p>
