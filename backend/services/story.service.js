@@ -17,3 +17,20 @@ exports.getAssetStories = (id, options, result) => {
     return result(null, data);
   });
 }
+
+/**
+ * GET dettaglio storia
+ * 
+ * @param {*} id 
+ * @param {*} result
+ * 
+ */
+exports.getOne = (id, result) => {
+  StoryModel.getOne(id, (err, data) => {
+    if (err) {
+      return result(err, null);
+    }
+
+    return result(null, data);
+  });
+}

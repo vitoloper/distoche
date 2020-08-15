@@ -28,6 +28,7 @@ app.use(express.static(distDir));
 // Routes
 require('./backend/routes/image.routes')(app);
 require('./backend/routes/asset.routes')(app);
+require('./backend/routes/story.routes')(app);
 
 // Initialize the app
 var server = app.listen(process.env.PORT || 3000, function () {

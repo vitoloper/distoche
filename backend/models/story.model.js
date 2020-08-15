@@ -121,4 +121,29 @@ Story.getAssetStories = (id, options, result) => {
   }); // getConnection
 }; // Story.getAssetStories
 
+/**
+ * Dettaglio storia
+ * 
+ * @param {*} id 
+ * @param {*} result
+ *  
+ */
+Story.getOne = (id, result) => {
+  queryStr = 'SELECT S.id, S.approved_at, S.created_at, S.modified_at, S.titolo, S.descr, S.contenuto, S.cover_img_url, S.approved, S.visible,' +
+    ' S.id_bene, O.username as owner_username, A.username as approver_username' +
+    ' FROM storia S JOIN utente O ON S.owner = O.id JOIN utente A ON S.approved_by = A.id' +
+    ' WHERE S.id = ?';
+
+  sql.query(queryStr, id, (err, res) => {
+    if (err) {
+      logger.error(err);
+      return result(err, null);
+    }
+
+    if (res.length > 0)
+      logger.info(`story.model.js - getOne - story id: ${res[0].id}`);
+    return result(null, res);
+  });
+}; // Story.getOne
+
 module.exports = Story;
