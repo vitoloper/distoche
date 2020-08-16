@@ -9,6 +9,7 @@ import { CulturalAssetsComponent } from './cultural-assets/cultural-assets.compo
 import { CulturalAssetDetailComponent } from './cultural-asset-detail/cultural-asset-detail.component';
 import { StoryDetailComponent } from './story-detail/story-detail.component';
 import { LoginComponent } from './login/login.component';
+import { MyStoriesComponent } from './my-stories/my-stories.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { LoginComponent } from './login/login.component';
     CulturalAssetsComponent,
     CulturalAssetDetailComponent,
     StoryDetailComponent,
-    LoginComponent
+    LoginComponent,
+    MyStoriesComponent
   ],
   imports: [
     BrowserModule,

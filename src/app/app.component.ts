@@ -21,4 +21,12 @@ export class AppComponent {
   logout(): void {
     this.authService.logout();
   }
+
+  get isEsperto() {
+    return this.user && this.user.role === Role.esperto;
+  }
+
+  get isFruitore() {
+    return this.user && this.user.role === Role.fruitore;
+  }
 }

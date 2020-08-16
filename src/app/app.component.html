@@ -8,12 +8,16 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item" routerLinkActive="active">
+        <!-- <li class="nav-item" routerLinkActive="active">
           <a class="nav-link" routerLink="/home">Home</a>
-        </li>
+        </li> -->
 
         <li class="nav-item" routerLinkActive="active">
           <a class="nav-link" routerLink="/beni">Beni Culturali</a>
+        </li>
+
+        <li class="nav-item" routerLinkActive="active" *ngIf="isEsperto || isFruitore">
+          <a class="nav-link" routerLink="/utente/storie">Le mie storie</a>
         </li>
       </ul>
 
