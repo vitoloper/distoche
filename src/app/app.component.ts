@@ -1,4 +1,9 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { AuthenticationService } from './authentication.service';
+import { User } from './_models/user';
+import { Role } from './_models/role';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +12,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'DiStoCHe';
+  user: User;
+
+  constructor(private authService: AuthenticationService) {
+    this.authService.user.subscribe(x => this.user = x);
+  }
+
+  logout(): void {
+    this.authService.logout();
+  }
 }

@@ -8,13 +8,15 @@ import { AppComponent } from './app.component';
 import { CulturalAssetsComponent } from './cultural-assets/cultural-assets.component';
 import { CulturalAssetDetailComponent } from './cultural-asset-detail/cultural-asset-detail.component';
 import { StoryDetailComponent } from './story-detail/story-detail.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CulturalAssetsComponent,
     CulturalAssetDetailComponent,
-    StoryDetailComponent
+    StoryDetailComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

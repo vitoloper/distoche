@@ -10,3 +10,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }
+
+.pointer {
+  cursor: pointer;
+}

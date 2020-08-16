@@ -17,14 +17,28 @@
         </li>
       </ul>
 
-      <ul class="navbar-nav mr-md-2">
+      <ul class="navbar-nav mr-md-2" *ngIf="!user">
         <li class="nav-item" routerLinkActive="active">
           <a class="nav-link" routerLink="/login">Login</a>
         </li>
       </ul>
 
-      <a class="btn btn-outline-primary" routerLink="/signup">Registrati</a>
-     
+      <a class="btn btn-outline-primary" routerLink="/signup" *ngIf="!user">Registrati</a>&nbsp;
+
+      <ul class="navbar-nav mr-md-2" *ngIf="user">
+        <li class="nav-item dropdown active">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarUser" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Benvenuto, {{user.username}}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarUserDropdown">
+            <a class="dropdown-item" href="#">Profilo</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item pointer" (click)="logout()">Logout</a>
+          </div>
+        </li>
+      </ul>
+
     </div>
   </nav>
 </header>
