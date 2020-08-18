@@ -9,9 +9,11 @@ import { MyStoriesComponent } from './my-stories/my-stories.component';
 
 import { AuthGuard } from './_helpers/auth.guard';
 import { Role } from './_models/role';
+import { SignupComponent } from './signup/signup.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
   { path: 'beni', component: CulturalAssetsComponent },
   { path: 'beni/:id', component: CulturalAssetDetailComponent },
   { path: 'storie/:id', component: StoryDetailComponent },

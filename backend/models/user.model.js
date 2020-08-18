@@ -50,4 +50,24 @@ User.findByUsernameAndPassword = (username, password, resultFunc) => {
   });
 }
 
+/**
+ * Create a new user
+ * 
+ * @param {*} newUser 
+ * @param {*} result 
+ * 
+ */
+User.create = (newUser, result) => {
+  sql.query('INSERT INTO utente SET ? ', newUser, (err, res) => {
+    if (err) {
+      logger.error(err);
+      return result(err, null);
+    }
+
+    logger.info(`Created new user with id ${res.insertId}`);
+    const {password, ...newUserWithoutPassword } = newUser;
+    return result(null, {id: res.insertId, ...newUserWithoutPassword});
+  });
+}
+
 module.exports = User;

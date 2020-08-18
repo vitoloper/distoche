@@ -1,5 +1,6 @@
 const config = require('../config/jwt.config.json');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const Role = require('../_helpers/role');
 const UserModel = require('../models/user.model.js');
 
@@ -30,3 +31,43 @@ exports.authenticate = (username, password, result) => {
 
     });
 }
+
+/**
+ * Signup service
+ * 
+ * @param {*} userdata 
+ * @param {*} result 
+ * 
+ */
+exports.signup = (userdata, result) => {
+    // Hash cleartext password
+    bcrypt.hash(userdata.password, 10, (hashErr, hashedPwd) => {
+        if (hashErr) {
+            return result(hashErr, null);
+        }
+
+        // Create a user
+        const user = new UserModel({
+            created_at: new Date(),
+            modified_at: new Date(),
+            username: userdata.username,
+            email: userdata.email,
+            nome: userdata.nome,
+            cognome: userdata.cognome,
+            data_nascita: userdata.data_nascita,
+            citta_residenza: userdata.citta_residenza,
+            password: hashedPwd,
+            role: Role.fruitore,     // default role is 'fruitore'
+            enabled: true
+        });
+
+        // Insert a new user
+        UserModel.create(user, (err, data) => {
+            if (err) {
+                return result(err, null);
+            }
+
+            return result(null, data);
+        });
+    }); // bcrypt.hash
+} // signup

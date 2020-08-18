@@ -1,0 +1,84 @@
+<div class="row m-2 justify-content-center">
+  <div class="col-md-3">
+  </div>
+
+  <div class="col-md-6">
+    <form class="border p-3 shadow" #signupForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="form-row text-center">
+        <div class="col-12">
+          <!-- replace with img logo -->
+          <h3>DiStoCHe</h3>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="usernameText">Username</label>
+        <input type="text" class="form-control" id="usernameText" name="usernameText" placeholder="Username"
+          [(ngModel)]="data.username" #usernameText="ngModel">
+      </div>
+
+      <div class="form-group">
+        <label for="emailText">E-mail</label>
+        <input type="text" class="form-control" id="emailText" name="emailText" placeholder="E-mail"
+          [(ngModel)]="data.email" #emailText="ngModel">
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="nomeText">Nome</label>
+            <input type="text" class="form-control" id="nomeText" name="nomeText" placeholder="Nome"
+              [(ngModel)]="data.nome" #nomeText="ngModel">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="cognomeText">Cognome</label>
+            <input type="text" class="form-control" id="cognomeText" name="cognomeText" placeholder="Cognome"
+              [(ngModel)]="data.cognome" #cognomeText="ngModel">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="dataNascita">Data di nascita</label>
+        <input type="date" class="form-control" id="dataNascita" name="dataNascita" [(ngModel)]="data.data_nascita"
+          #dataNascita="ngModel">
+      </div>
+
+      <div class="form-group">
+        <label for="cittaResidenza">Città (residenza)</label>
+        <input type="text" class="form-control" id="cittaResidenza" name="cittaResidenza" placeholder="Città"
+          [(ngModel)]="data.citta_residenza" #cittaResidenza="ngModel">
+      </div>
+
+      <div class="form-group">
+        <label for="passwordText">Password</label>
+        <input type="password" class="form-control" id="passwordText" name="passwordText" placeholder="Password"
+          [(ngModel)]="data.password" #passwordText="ngModel">
+      </div>
+
+      <div class="form-group">
+        <label for="passwordConfirmText">Conferma password</label>
+        <input type="password" class="form-control" id="passwordConfirmText" name="passwordConfirmText"
+          placeholder="Password" [(ngModel)]="passwordConfirm" #passwordConfirmText="ngModel">
+      </div>
+
+      <div class="form-row text-center">
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Registrati</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- alert row -->
+    <div class="row justify-content-center m-3" [hidden]="isErrorAlertHidden">
+      <div class="alert alert-danger" role="alert">
+        {{errorText}}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+  </div>
+</div>

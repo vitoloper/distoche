@@ -32,11 +32,11 @@ export class LoginComponent implements OnInit {
         this.router.navigate([this.returnUrl]);
       }, err => {
         if (err.status === 400) {
-          this.errorText = 'Username o password non validi.' 
+          this.errorText = 'Username o password non validi.'
         } else {
           this.errorText = err.error.message;
         }
-        
+
         this.isErrorAlertHidden = false;
         console.log(err);
       });
