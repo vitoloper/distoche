@@ -1,5 +1,8 @@
+const authorize = require('../_helpers/authorize');
+const stories = require('../controllers/story.controller');
+
 module.exports = (app) => {
-  const stories = require('../controllers/story.controller');
 
   app.get('/api/stories/:id', stories.getOne);  // Get one story
+  app.get('/api/user/stories', authorize(), stories.getUserStories);
 }

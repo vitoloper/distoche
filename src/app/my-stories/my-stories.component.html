@@ -1,1 +1,108 @@
-<p>my-stories works!</p>
+<!-- search, order and filter row -->
+<div class="row mt-2 mb-3">
+  <form class="form-inline mr-auto" #orderForm="ngForm">
+    <!-- select (order by) -->
+    <div class="form-group m-2">
+      <label for="orderBy">Ordina per &nbsp;</label>
+      <select class="form-control" [(ngModel)]="ordering.field" (change)="getMyStories()" id="orderBy" name="orderBy"
+        #orderBy="ngModel">
+        <option value="created_at">Data creazione</option>
+        <option value="modified_at">Data ultima modifica</option>
+        <option value="titolo">Titolo</option>
+      </select>
+    </div>
+    <!-- radio buttons (asc, desc) -->
+    <div class="form-check m-2">
+      <input class="form-check-input" type="radio" name="orderRadios" id="orderDesc" value="desc"
+        [(ngModel)]="ordering.direction" (change)="getMyStories()">
+      <label class="form-check-label" for="orderDesc">
+        <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+      </label>
+    </div>
+    <div class="form-check m-2">
+      <input class="form-check-input" type="radio" name="orderRadios" id="orderAsc" value="asc"
+        [(ngModel)]="ordering.direction" (change)="getMyStories()">
+      <label class="form-check-label" for="orderAsc">
+        <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
+      </label>
+    </div>
+  </form>
+  <!-- name search -->
+  <form class="form-inline ml-1" (ngSubmit)="searchInTitle()" #searchForm="ngForm">
+    <input class="form-control mr-2" type="text" placeholder="Cerca nel titolo" aria-label="Cerca" id="nameText"
+      name="nameText" [(ngModel)]="titleSearch" #nameText="ngModel">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cerca</button>
+  </form>
+</div>
+<!-- END search, order and filter row -->
+
+<!-- total number info row -->
+<div class="row" [hidden]="!isErrorAlertHidden">
+  <p class="text-secondary ml-2">Numero di storie trovate: {{totalElements}}</p>
+</div>
+<!-- END total number info row -->
+
+<!-- stories alert row -->
+<div class="row justify-content-center" [hidden]="isErrorAlertHidden">
+  <div class="alert alert-danger" role="alert">
+    Impossibile ottenere un elenco di storie. Provare a ricaricare la pagina.
+  </div>
+</div>
+<!-- END stories alert row -->
+
+<!-- pagination row -->
+<div class="row m-2">
+  <div class="col"></div>
+  <div class="col text-center">
+    <div [hidden]="totalPages === 0">
+      <p>
+        <i class="pointer fa fa-chevron-left mr-3" [hidden]="isPrevPageHidden" (click)="prevPage()"></i>
+        Pagina {{currentPage}} di {{totalPages}}
+        <i class="pointer fa fa-chevron-right ml-3" [hidden]="isNextPageHidden" (click)="nextPage()"></i>
+      </p>
+    </div>
+    <div [hidden]="totalPages !== 0">
+    </div>
+  </div>
+  <div class="col"></div>
+</div>
+<!-- END pagination row -->
+
+<!-- cards rows -->
+<div *ngFor="let row of rows" class="row">
+  <div *ngFor="let story of row" class="col-sm-4 d-flex align-items-stretch">
+    <div class="card m-2 p-1 pointer shadow-sm" [routerLink]="'/storie/'+story.id">
+      <img class="card-img-top border" [src]="story.cover_img_url"
+        onError="this.src = 'assets/images/not-available-360x270.png'" alt="Card image caption">
+      <div class="card-body">
+        <h5 class="card-title text-truncate" [title]="story.titolo">{{story.titolo}}</h5>
+        <p class="card-text line-clamp-3">{{story.descr || 'Nessuna descrizione disponibile.'}}</p>
+      </div>
+      <div class="card-footer small text-muted">
+        <span><i class="fa fa-clock-o" title="Data ultima modifica"
+            aria-hidden="true"></i>&nbsp;{{(story.modified_at | date: 'dd-MM-yyyy') || 'n.d.'}}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END cards rows -->
+
+<!-- pagination row -->
+<div class="row m-2">
+  <div class="col"></div>
+  <div class="col text-center">
+    <div [hidden]="totalPages === 0">
+      <p>
+        <i class="pointer fa fa-chevron-left mr-3" [hidden]="isPrevPageHidden" (click)="prevPage()"></i>
+        Pagina {{currentPage}} di {{totalPages}}
+        <i class="pointer fa fa-chevron-right ml-3" [hidden]="isNextPageHidden" (click)="nextPage()"></i>
+      </p>
+    </div>
+    <div [hidden]="totalPages !== 0">
+      <p>Nessuna storia da mostrare</p>
+    </div>
+  </div>
+  <div class="col"></div>
+</div>
+<!-- END pagination row -->

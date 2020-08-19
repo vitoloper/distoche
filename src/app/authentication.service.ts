@@ -46,7 +46,7 @@ export class AuthenticationService {
     if (error.error.message) {
       userMessage = error.error.message;
     } else {
-      userMessage = 'Story operation error';
+      userMessage = 'Auth operation error';
     }
 
     return throwError(userMessage);

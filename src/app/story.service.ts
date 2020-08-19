@@ -10,6 +10,7 @@ export class StoryService {
 
   assetsUrl = '/api/assets';
   storiesUrl = '/api/stories';
+  userStoriesUrl = '/api/user/stories';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -58,7 +59,7 @@ export class StoryService {
   getAssetStories(id: any, titlequery: any, ordering: any, limit: number, offset: number): Observable<any> {
     return this.http
       .get<any>(`${this.assetsUrl}/${id}/stories?titlequery=${titlequery}&orderby=${ordering.field}&direction=${ordering.direction}&limit=${limit}&offset=${offset}`, this.httpOptions)
-      .pipe(catchError(this.handleError));    
+      .pipe(catchError(this.handleError));
   }
 
   /**
@@ -70,6 +71,19 @@ export class StoryService {
   getStoryDetail(id: any): Observable<any> {
     return this.http
       .get<any>(`${this.storiesUrl}/${id}`, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Get my stories (note: token is inserted by JWT interceptor)
+   * @param titlequery 
+   * @param ordering 
+   * @param limit 
+   * @param offset 
+   */
+  getMyStories(titlequery: any, ordering: any, limit: number, offset: number): Observable<any> {
+    return this.http
+      .get<any>(`${this.userStoriesUrl}?titlequery=${titlequery}&orderby=${ordering.field}&direction=${ordering.direction}&limit=${limit}&offset=${offset}`, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

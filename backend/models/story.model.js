@@ -105,7 +105,7 @@ Story.getAssetStories = (id, options, result) => {
               return result(err, null);
             };
 
-            logger.log('info', `story.model.js - get - number of rows returned: ${res.length}`)
+            logger.log('info', `story.model.js - getAssetStories - number of rows returned: ${res.length}`)
             connection.release();
             if (connErr) {
               return result(connErr, null)
@@ -120,6 +120,108 @@ Story.getAssetStories = (id, options, result) => {
     }); // beginTransaction
   }); // getConnection
 }; // Story.getAssetStories
+
+/**
+ * 
+ * @param {*} id - id utente 
+ * @param {*} options 
+ * @param {*} result 
+ * 
+ */
+Story.getUserStories = (id, options, result) => {
+  var orderby, direction, limit, offset;
+
+  if (options.orderby !== null) {
+    orderby = options.orderby;
+  } else {
+    // Ordinamento di default: data di creazione
+    orderby = 'created_at';
+  }
+
+  // Check limit and offset options and set default values if any of them is null
+  if (options.limit !== null && options.offset !== null) {
+    limit = options.limit;
+    offset = options.offset;
+  } else {
+    limit = 100;
+    offset = 0;
+  }
+
+  var query;
+
+  if (options.titlequery !== null) {
+    var titlequery = '%' + options.titlequery + '%';
+    // Descending order or ascending order
+    if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
+      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `owner` = ? AND `visible` = 1 AND `approved` = 1 AND `titolo` LIKE ? ORDER BY ?? DESC LIMIT ? OFFSET ?', [id, titlequery, orderby, limit, offset]);
+    } else {
+      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `owner` = ? AND `visible` = 1 AND `approved` = 1 AND `titolo` LIKE ? ORDER BY ?? ASC LIMIT ? OFFSET ?', [id, titlequery, orderby, limit, offset]);
+    }
+  } else {
+    // Descending order or ascending order
+    if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
+      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `owner` = ? AND `visible` = 1 AND `approved` = 1 ORDER BY ?? DESC LIMIT ? OFFSET ?', [id, orderby, limit, offset]);
+    } else {
+      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `owner` = ? AND `visible` = 1 AND `approved` = 1 ORDER BY ?? ASC LIMIT ? OFFSET ?', [id, orderby, limit, offset]);
+    }
+  }
+
+  // Get a connection from the pool
+  sql.getConnection((connErr, connection) => {
+    if (connErr) return result(connErr, null);
+
+    // Begin a transaction to get total number and data
+    connection.beginTransaction(function (err) {
+      if (err) {
+        connection.release();
+        return result(err, null);
+      };
+
+      var countQuery;
+      if (options.titlequery !== null) {
+        var titlequery = '%' + options.titlequery + '%';
+        countQuery = mysql.format('SELECT COUNT(id) AS total FROM storia WHERE owner = ? AND approved = 1 AND visible = 1 AND titolo LIKE ?', [id, titlequery]);
+      } else {
+        countQuery = mysql.format('SELECT COUNT(id) AS total FROM storia WHERE owner = ? AND approved = 1 AND visible = 1', [id]);
+      }
+
+      connection.query(countQuery, (err, res) => {
+        if (err) {
+          connection.release();
+          return result(err, null);
+        };
+
+        var totalStories = res[0].total;
+
+        connection.query(query, (err, res) => {
+          if (err) {
+            connection.release();
+            return result(err, null);
+          };
+
+          var resultData = res;
+
+          connection.commit((err) => {
+            if (err) {
+              connection.release();
+              return result(err, null);
+            };
+
+            logger.log('info', `story.model.js - getUserStories - number of rows returned: ${res.length}`)
+            connection.release();
+            if (connErr) {
+              return result(connErr, null)
+            };
+
+            // Return number of total stories and data
+            return result(null, { total: totalStories, data: resultData });
+          });
+
+        });
+      });
+    }); // beginTransaction
+  }); // getConnection
+}; // Story.getUserStories
 
 /**
  * Dettaglio storia

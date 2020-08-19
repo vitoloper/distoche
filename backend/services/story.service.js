@@ -34,3 +34,21 @@ exports.getOne = (id, result) => {
     return result(null, data);
   });
 }
+
+/**
+ * GET storie utente specifico
+ * 
+ * @param {*} userId 
+ * @param {*} options 
+ * @param {*} result 
+ * 
+ */
+exports.getUserStories = (userId, options, result) => {
+  StoryModel.getUserStories(userId, options, (err, data) => {
+    if (err) {
+      return result(err, null);
+    }
+
+    return result(null, data);
+  });
+}
