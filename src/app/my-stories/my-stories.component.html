@@ -71,7 +71,7 @@
 <!-- cards rows -->
 <div *ngFor="let row of rows" class="row">
   <div *ngFor="let story of row" class="col-sm-4 d-flex align-items-stretch">
-    <div class="card m-2 p-1 pointer shadow-sm" [routerLink]="'/storie/'+story.id">
+    <div class="card m-2 p-1 pointer shadow-sm" [routerLink]="'/utente/storie/'+story.id">
       <img class="card-img-top border" [src]="story.cover_img_url"
         onError="this.src = 'assets/images/not-available-360x270.png'" alt="Card image caption">
       <div class="card-body">

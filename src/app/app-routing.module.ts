@@ -6,6 +6,7 @@ import { CulturalAssetDetailComponent } from './cultural-asset-detail/cultural-a
 import { StoryDetailComponent } from './story-detail/story-detail.component';
 import { LoginComponent } from './login/login.component';
 import { MyStoriesComponent } from './my-stories/my-stories.component';
+import { EditStoryComponent } from './edit-story/edit-story.component';
 
 import { AuthGuard } from './_helpers/auth.guard';
 import { Role } from './_models/role';
@@ -19,6 +20,11 @@ const routes: Routes = [
   { path: 'storie/:id', component: StoryDetailComponent },
   {
     path: 'utente/storie', component: MyStoriesComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.esperto, Role.fruitore] }
+  },
+  {
+    path: 'utente/storie/:id', component: EditStoryComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.esperto, Role.fruitore] }
   },

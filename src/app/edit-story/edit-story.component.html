@@ -1,0 +1,42 @@
+<div class="row" [hidden]="!isErrorAlertHidden">
+  <div class="col-sm-4"><img [src]="story?.cover_img_url" onError="this.src = 'assets/images/not-available-360x270.png'"
+      alt="Immagine storia" class="img-fluid border p-1"></div>
+  <div class="col-sm-6">
+    <form class="form" #titleDescForm="ngForm">
+      <input *ngIf="story !== undefined && story.titolo !== undefined" class="form-control" type="text" placeholder="Titolo" id="titleText"
+        name="titleText" [(ngModel)]="story.titolo" #titleText="ngModel">
+        <textarea *ngIf="story !== undefined && story.descr !== undefined" rows="6" class="form-control mt-2" placeholder="Descrizione" id="descrText" name="descrText" [(ngModel)]="story.descr"
+        #descrText="ngModel"></textarea>
+    </form>
+  </div>
+  <div class="col-sm-2">
+    <p class="small"><i class="fa fa-pencil" title="Data creazione"
+        aria-hidden="true"></i>&nbsp;{{(story?.created_at | date: 'dd-MM-yyyy') || 'n.d.'}}
+    </p>
+    <p class="small"><i class="fa fa-clock-o" title="Data ultima modifica"
+        aria-hidden="true"></i>&nbsp;{{(story?.modified_at | date: 'dd-MM-yyyy') || 'n.d.'}}</p>
+    <p class="small"><i class="fa fa-user" title="Proprietario"
+        aria-hidden="true"></i>&nbsp;{{story?.owner_username || 'n.d.'}}
+    </p>
+    <p class="small"><i class="fa fa-calendar-check-o" title="Data approvazione"
+        aria-hidden="true"></i>&nbsp;{{(story?.approved_at | date: 'dd-MM-yyyy') || 'n.d.'}}
+    </p>
+    <p class="small"><i class="fa fa-user-circle" title="Approvatore"
+        aria-hidden="true"></i>&nbsp;{{story?.approver_username || 'n.d.'}}
+  </div>
+</div>
+
+<!-- asset alert row -->
+<div class="row justify-content-center" [hidden]="isErrorAlertHidden">
+  <div class="alert alert-danger" role="alert">
+    Impossibile ottenere informazioni sulla storia. Provare a ricaricare la pagina.
+  </div>
+</div>
+<!-- END asset alert row -->
+
+<!-- content editor -->
+<!-- If you want a more advanced configuration: https://www.intricatecloud.io/2019/10/using-angular-innerhtml-to-display-user-generated-content-without-sacrificing-security/ -->
+<div id="content" class="mt-3 p-3 border rounded shadow" [hidden]="!isErrorAlertHidden">
+  <div [innerHtml]="story?.contenuto"></div>
+</div>
+<!-- END content -->
