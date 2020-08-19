@@ -62,7 +62,7 @@ export class CulturalAssetService {
     let wlon = Number((boundaries._southWest.lng).toFixed(3));
 
     return this.http
-      .get<any>(`${this.assetsUrl}?nlata=${nlat}&slat=${slat}&elon=${elon}&wlon=${wlon}&namequery=${namequery}&orderby=${ordering.field}&direction=${ordering.direction}&limit=${limit}&offset=${offset}`, this.httpOptions)
+      .get<any>(`${this.assetsUrl}?nlat=${nlat}&slat=${slat}&elon=${elon}&wlon=${wlon}&namequery=${namequery}&orderby=${ordering.field}&direction=${ordering.direction}&limit=${limit}&offset=${offset}`, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
