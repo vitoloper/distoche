@@ -248,4 +248,26 @@ Story.getOne = (id, result) => {
   });
 }; // Story.getOne
 
+/**
+ * Update storia
+ * 
+ * @param {*} id 
+ * @param {*} story 
+ * @param {*} result 
+ * 
+ */
+Story.update = (id, story, result) => {
+  queryStr = 'UPDATE storia SET modified_at = ?, titolo = ?, descr = ?, contenuto = ?,  ' +
+    'cover_img_url = ?, visible = ? WHERE id = ?';
+
+  sql.query(queryStr, [story.modified_at, story.titolo, story.descr, story.contenuto, story.cover_img_url, story.visible, story.id], (err, res) => {
+    if (err) {
+      logger.error(err);
+      return result(err, null);
+    }
+
+    return result(null, res);
+  });
+}
+
 module.exports = Story;

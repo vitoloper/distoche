@@ -52,3 +52,23 @@ exports.getUserStories = (userId, options, result) => {
     return result(null, data);
   });
 }
+
+/**
+ * Update storia
+ * 
+ * @param {*} id 
+ * @param {*} story 
+ * @param {*} result 
+ * 
+ */
+exports.updateStory = (id, story, result) => {
+  story.modified_at = new Date();
+
+  StoryModel.update(id, story, (err, data) => {
+    if (err) {
+      return result(err, null);
+    }
+
+    return result(null, story);
+  });
+}

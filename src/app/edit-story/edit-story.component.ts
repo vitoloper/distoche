@@ -13,12 +13,10 @@ export class EditStoryComponent implements OnInit {
   Editor = ClassicEditor;
   storyId;
   story;
-  contenuto;
+  contenuto = '';
   isErrorAlertHidden = true;
-
-  public model = {
-    editorData: '<h1>Hey!</h1>'
-  };
+  isSavedOkAlertHidden = true;
+  isSaveErrorAlertHidden = true;
 
   constructor(private route: ActivatedRoute,
     private storyService: StoryService,
@@ -31,6 +29,10 @@ export class EditStoryComponent implements OnInit {
     this.getStoryDetail();
   }
 
+  /**
+   * Get story detail
+   * 
+   */
   private getStoryDetail(): void {
     this.isErrorAlertHidden = true;
 
@@ -38,6 +40,7 @@ export class EditStoryComponent implements OnInit {
       .subscribe(
         (result) => {
           this.story = result[0];
+          this.contenuto = this.story.contenuto;
         }, (err) => {
           this.isErrorAlertHidden = false;
           console.log(err);
@@ -53,10 +56,31 @@ export class EditStoryComponent implements OnInit {
   onFileChanged(event) {
     const file = event.target.files[0];
     const uploadData = new FormData();
-    uploadData.append('imageFile', file.selectedFile, file.selectedFile.name);
+    console.log(file);
+    uploadData.append('photo', file, file.name);
 
     this.uploadService.uploadImage(uploadData).subscribe(result => {
       console.log(result);
+      this.story.cover_img_url = 'api/images/'+result.filename;
+    },
+    err => {
+      console.log(err);
+    });
+  }
+
+  /**
+   * Save story
+   * 
+   */
+  saveStory(): void {
+    // TODO: check if this is a NEW story or we are going to UPDATE an existing one
+
+    // Assign editor content to story content
+    this.story.contenuto = this.contenuto;
+
+    this.storyService.updateStory(this.story.id, this.story).subscribe(result => {
+      this.isSavedOkAlertHidden = false;
+      this.story = result;
     },
     err => {
       console.log(err);

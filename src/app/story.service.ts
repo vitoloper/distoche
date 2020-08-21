@@ -87,4 +87,14 @@ export class StoryService {
       .pipe(catchError(this.handleError));
   }
 
+  /**
+   * Update story
+   * @param id 
+   * @param story 
+   */
+  updateStory(id, story): Observable<any> {
+    return this.http.put<any>(`${this.storiesUrl}/${id}`, story, this.httpOptions)
+    .pipe(catchError(this.handleError));
+  }
+
 }

@@ -1,4 +1,4 @@
-<div class="row mb-3" [hidden]="!isErrorAlertHidden">
+<div *ngIf="story" class="row mb-3" [hidden]="!isErrorAlertHidden">
   <div class="col-sm-4"><img [src]="story?.cover_img_url" onError="this.src = 'assets/images/not-available-360x270.png'"
       alt="Immagine storia" class="img-fluid border p-1">
     <div class="row justify-content-center mt-1">
@@ -49,11 +49,26 @@
 </div>
 <!-- END asset alert row -->
 
-<ckeditor [(ngModel)]="model.editorData" [editor]="Editor"></ckeditor>
+<!-- editor -->
+<ckeditor *ngIf="story" [(ngModel)]="contenuto" [editor]="Editor"></ckeditor>
 
-<!-- content -->
-<!-- If you want a more advanced configuration: https://www.intricatecloud.io/2019/10/using-angular-innerhtml-to-display-user-generated-content-without-sacrificing-security/ -->
-<div id="content" class="mt-3 p-3 border rounded shadow" [hidden]="!isErrorAlertHidden">
-  <div [innerHtml]="model.editorData"></div>
+<!-- Save -->
+<div *ngIf="story" class="row justify-content-center m-3">
+  <button (click)="saveStory()" type="button" class="btn btn-primary mb-3">Salva</button>
 </div>
-<!-- END content -->
+
+<!-- Save OK alert -->
+<div *ngIf="story" [hidden]="isSavedOkAlertHidden" class="row justify-content-center">
+  <div class="alert alert-primary" role="alert">
+    Storia salvata correttamente
+  </div>
+</div>
+<!-- END Save OK alert -->
+
+<!-- story save error alert row -->
+<div *ngIf="story" class="row justify-content-center" [hidden]="isSaveErrorAlertHidden">
+  <div class="alert alert-danger" role="alert">
+    Errore nel salvataggio della storia. Riprovare.
+  </div>
+</div>
+<!-- END save error alert row -->

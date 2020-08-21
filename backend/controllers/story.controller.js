@@ -1,4 +1,5 @@
 const StoryService = require('../services/story.service');
+const Story = require('../models/story.model');
 
 exports.getAssetStories = (req, res) => {
   options = {
@@ -139,6 +140,30 @@ exports.getUserStories = (req, res) => {
   StoryService.getUserStories(userId, options, (err, data) => {
     if (err) {
       return res.status(500).json({ message: err.message || 'Error retrieving stories' });
+    }
+
+    return res.json(data);
+  });
+}
+
+exports.updateStory = (req, res) => {
+  var id = req.params.id;
+  var story = req.body;
+
+  if (!id) {
+    return res.status(400).json({ message: 'id required' });
+  }
+
+  if (isNaN(id)) {
+    return res.status(400).json({ message: 'Invalid id' });
+  }
+
+  // Parse story id
+  id = parseInt(id);
+
+  StoryService.updateStory(id, story, (err, data) => {
+    if (err) {
+      return res.status(500).json({ message: err.message || 'Error saving story'});
     }
 
     return res.json(data);
