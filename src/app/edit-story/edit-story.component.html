@@ -50,7 +50,7 @@
 <!-- END asset alert row -->
 
 <!-- editor -->
-<ckeditor *ngIf="story" [(ngModel)]="contenuto" [editor]="Editor"></ckeditor>
+<ckeditor *ngIf="story" [config]="ckConfig" [(ngModel)]="contenuto" [editor]="Editor"></ckeditor>
 
 <!-- Save -->
 <div *ngIf="story" class="row justify-content-center m-3">
@@ -72,3 +72,5 @@
   </div>
 </div>
 <!-- END save error alert row -->
+
+{{contenuto}}
