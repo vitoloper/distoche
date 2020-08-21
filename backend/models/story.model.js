@@ -122,6 +122,7 @@ Story.getAssetStories = (id, options, result) => {
 }; // Story.getAssetStories
 
 /**
+ * Ottieni storie di un utente specifico
  * 
  * @param {*} id - id utente 
  * @param {*} options 
@@ -153,16 +154,16 @@ Story.getUserStories = (id, options, result) => {
     var titlequery = '%' + options.titlequery + '%';
     // Descending order or ascending order
     if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
-      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `owner` = ? AND `visible` = 1 AND `approved` = 1 AND `titolo` LIKE ? ORDER BY ?? DESC LIMIT ? OFFSET ?', [id, titlequery, orderby, limit, offset]);
+      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `owner` = ? AND `approved` = 1 AND `titolo` LIKE ? ORDER BY ?? DESC LIMIT ? OFFSET ?', [id, titlequery, orderby, limit, offset]);
     } else {
-      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `owner` = ? AND `visible` = 1 AND `approved` = 1 AND `titolo` LIKE ? ORDER BY ?? ASC LIMIT ? OFFSET ?', [id, titlequery, orderby, limit, offset]);
+      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `owner` = ? AND `approved` = 1 AND `titolo` LIKE ? ORDER BY ?? ASC LIMIT ? OFFSET ?', [id, titlequery, orderby, limit, offset]);
     }
   } else {
     // Descending order or ascending order
     if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
-      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `owner` = ? AND `visible` = 1 AND `approved` = 1 ORDER BY ?? DESC LIMIT ? OFFSET ?', [id, orderby, limit, offset]);
+      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `owner` = ? AND `approved` = 1 ORDER BY ?? DESC LIMIT ? OFFSET ?', [id, orderby, limit, offset]);
     } else {
-      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `owner` = ? AND `visible` = 1 AND `approved` = 1 ORDER BY ?? ASC LIMIT ? OFFSET ?', [id, orderby, limit, offset]);
+      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `owner` = ? AND `approved` = 1 ORDER BY ?? ASC LIMIT ? OFFSET ?', [id, orderby, limit, offset]);
     }
   }
 
@@ -180,9 +181,9 @@ Story.getUserStories = (id, options, result) => {
       var countQuery;
       if (options.titlequery !== null) {
         var titlequery = '%' + options.titlequery + '%';
-        countQuery = mysql.format('SELECT COUNT(id) AS total FROM storia WHERE owner = ? AND approved = 1 AND visible = 1 AND titolo LIKE ?', [id, titlequery]);
+        countQuery = mysql.format('SELECT COUNT(id) AS total FROM storia WHERE owner = ? AND approved = 1 AND titolo LIKE ?', [id, titlequery]);
       } else {
-        countQuery = mysql.format('SELECT COUNT(id) AS total FROM storia WHERE owner = ? AND approved = 1 AND visible = 1', [id]);
+        countQuery = mysql.format('SELECT COUNT(id) AS total FROM storia WHERE owner = ? AND approved = 1', [id]);
       }
 
       connection.query(countQuery, (err, res) => {
