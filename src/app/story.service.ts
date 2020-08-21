@@ -96,5 +96,14 @@ export class StoryService {
     return this.http.put<any>(`${this.storiesUrl}/${id}`, story, this.httpOptions)
     .pipe(catchError(this.handleError));
   }
+  
+  /**
+   * Create new story
+   * @param story 
+   */
+  createStory(story): Observable<any> {
+    return this.http.post<any>(`${this.storiesUrl}`, story, this.httpOptions)
+    .pipe(catchError(this.handleError));
+  }
 
 }

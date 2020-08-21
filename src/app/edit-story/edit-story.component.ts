@@ -13,6 +13,7 @@ export class EditStoryComponent implements OnInit {
   Editor = ClassicEditor;
   storyId;
   story;
+  idBene;
   contenuto = '';
   isErrorAlertHidden = true;
   isSavedOkAlertHidden = true;
@@ -31,8 +32,19 @@ export class EditStoryComponent implements OnInit {
   ngOnInit(): void {
     this.storyId = this.route.snapshot.paramMap.get('id');
 
-    // Get story detail
-    this.getStoryDetail();
+    // if id is 'new' we are in creation mode, otherwise we are in editing mode
+    if (this.storyId === 'new') {
+      this.story = {
+        titolo: '',
+        descr: ''
+      };
+      
+      // Get id_bene (associate story with a specific cultural asset)
+      this.idBene = this.route.snapshot.queryParamMap.get("idbene");
+      this.story.id_bene = this.idBene;
+    } else {
+      this.getStoryDetail();
+    }
   }
 
   /**
@@ -79,21 +91,44 @@ export class EditStoryComponent implements OnInit {
    * 
    */
   saveStory(): void {
-    // TODO: check if this is a NEW story or we are going to UPDATE an existing one
-
     // Assign editor content to story content
     this.story.contenuto = this.contenuto;
 
-    this.storyService.updateStory(this.story.id, this.story).subscribe(result => {
-      this.isSavedOkAlertHidden = false;
-      this.story = result;
-    },
-      err => {
-        console.log(err);
-      });
+    // New story or editing mode
+    if (this.storyId === 'new') {
+      this.storyService.createStory(this.story)
+        .subscribe(
+          result => {
+            this.isSavedOkAlertHidden = false;
+            this.isSaveErrorAlertHidden = true;
+            this.story = result;
+          },
+          err => {
+            this.isSavedOkAlertHidden = true;
+            this.isSaveErrorAlertHidden = false;
+            console.log(err);
+          }
+        );
+    } else {
+      this.storyService.updateStory(this.story.id, this.story)
+        .subscribe(
+          result => {
+            this.isSavedOkAlertHidden = false;
+            this.isSaveErrorAlertHidden = true;
+            this.story = result;
+          },
+          err => {
+            this.isSavedOkAlertHidden = true;
+            this.isSaveErrorAlertHidden = false;
+            console.log(err);
+          }
+        );
+    }
   }
 
-}
+} // END EditStoryComponent
+
+// ******************************************************************
 
 class MyUploadPlugin {
   editor;

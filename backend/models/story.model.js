@@ -271,4 +271,22 @@ Story.update = (id, story, result) => {
   });
 }
 
+/**
+ * Crea una nuova storia
+ * 
+ * @param {} newStory 
+ * @param {*} result 
+ * 
+ */
+Story.create = (newStory, result) => {
+  sql.query('INSERT INTO storia SET ?', newStory, (err, res) => {
+    if (err) {
+      logger.error(err);
+      return result(err, null);
+    }
+
+    return result (null, {id: res.insertId, ...newStory});
+  });
+}
+
 module.exports = Story;

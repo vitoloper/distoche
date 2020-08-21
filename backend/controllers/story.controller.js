@@ -1,5 +1,5 @@
 const StoryService = require('../services/story.service');
-const Story = require('../models/story.model');
+const StoryModel = require('../models/story.model');
 
 exports.getAssetStories = (req, res) => {
   options = {
@@ -162,6 +162,27 @@ exports.updateStory = (req, res) => {
   id = parseInt(id);
 
   StoryService.updateStory(id, story, (err, data) => {
+    if (err) {
+      return res.status(500).json({ message: err.message || 'Error saving story'});
+    }
+
+    return res.json(data);
+  });
+}
+
+exports.createStory = (req, res) => {
+  var story = new StoryModel({
+    created_at: new Date(),
+    modified_at: new Date(),
+    titolo: req.body.titolo,
+    descr: req.body.descr,
+    contenuto: req.body.contenuto,
+    cover_img_url: req.body.cover_img_url,
+    visible: true,
+    id_bene: req.body.id_bene
+  });
+
+  StoryService.createStory(req.user, story, (err, data) => {
     if (err) {
       return res.status(500).json({ message: err.message || 'Error saving story'});
     }
