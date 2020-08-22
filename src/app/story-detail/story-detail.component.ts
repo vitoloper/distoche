@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { StoryService } from '../story.service';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-story-detail',
@@ -8,10 +9,16 @@ import { StoryService } from '../story.service';
   styleUrls: ['./story-detail.component.css']
 })
 export class StoryDetailComponent implements OnInit {
+  Editor = ClassicEditor;
   storyId;
   story;
   contenuto;
   isErrorAlertHidden = true;
+
+  // CKEditor configuration
+  ckConfig = {
+    toolbar: []
+  };
 
   constructor(private route: ActivatedRoute, private storyService: StoryService) { }
 

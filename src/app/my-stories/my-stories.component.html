@@ -71,10 +71,11 @@
 <!-- cards rows -->
 <div *ngFor="let row of rows" class="row">
   <div *ngFor="let story of row" class="col-sm-4 d-flex align-items-stretch">
-    <div class="card m-2 p-1 pointer shadow-sm" [routerLink]="'/utente/storie/'+story.id">
-      <img class="card-img-top border" [src]="story.cover_img_url"
-        onError="this.src = 'assets/images/not-available-360x270.png'" alt="Card image caption">
-      <div class="card-body">
+    <div class="card m-2 p-1 shadow-sm">
+      <img class="card-img-top border pointer" [src]="story.cover_img_url"
+        onError="this.src = 'assets/images/not-available-360x270.png'" alt="Card image caption"
+        [routerLink]="'/utente/storie/'+story.id">
+      <div class="card-body pointer" [routerLink]="'/utente/storie/'+story.id">
         <h5 class="card-title text-truncate" [title]="story.titolo">{{story.titolo}}</h5>
         <p class="card-text line-clamp-3">{{story.descr || 'Nessuna descrizione disponibile.'}}</p>
       </div>
@@ -82,8 +83,14 @@
         <span><i class="fa fa-clock-o" title="Data ultima modifica"
             aria-hidden="true"></i>&nbsp;{{(story.modified_at | date: 'dd-MM-yyyy') || 'n.d.'}}
         </span>
-        <span class="float-right"><i [hidden]="!story.visible" class="fa fa-eye" aria-hidden="true" title="visibile"></i></span>
-        <span class="float-right"><i [hidden]="story.visible" class="fa fa-eye-slash" aria-hidden="true" title="non visibile"></i></span>
+        <span class="float-right ml-2 pointer"><i (click)="deleteStory(story.id)" class="fa fa-trash trash"
+            aria-hidden="true" title="Cancella"></i></span>
+        <span class="float-right ml-3 pointer"><i [routerLink]="'/storie/'+story.id" class="fa fa-file-text-o" aria-hidden="true"
+            title="Anteprima"></i></span>
+        <span class="float-right"><i [hidden]="!story.visible" class="fa fa-eye" aria-hidden="true"
+            title="visibile"></i></span>
+        <span class="float-right"><i [hidden]="story.visible" class="fa fa-eye-slash" aria-hidden="true"
+            title="non visibile"></i></span>
       </div>
     </div>
   </div>

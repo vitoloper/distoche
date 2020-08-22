@@ -1,4 +1,4 @@
-<div class="row" [hidden]="!isErrorAlertHidden">
+<div class="row mb-2" [hidden]="!isErrorAlertHidden">
   <div class="col-sm-4"><img [src]="story?.cover_img_url" onError="this.src = 'assets/images/not-available-360x270.png'"
       alt="Immagine storia" class="img-fluid border p-1"></div>
   <div class="col-sm-6">
@@ -6,6 +6,9 @@
     <p>{{story?.descr || 'Nessuna descrizione disponibile.'}}</p>
   </div>
   <div class="col-sm-2">
+    <p class="small" *ngIf="story"><i class="fa fa-university" title="Bene culturale" aria-hidden="true"></i>&nbsp;<a
+        [routerLink]="'/beni/'+story.id_bene">Bene culturale</a>
+    </p>
     <p class="small"><i class="fa fa-pencil" title="Data creazione"
         aria-hidden="true"></i>&nbsp;{{(story?.created_at | date: 'dd-MM-yyyy') || 'n.d.'}}
     </p>
@@ -23,16 +26,12 @@
 </div>
 
 <!-- asset alert row -->
-<div class="row justify-content-center" [hidden]="isErrorAlertHidden">
+<div class="row justify-content-center mb-2" [hidden]="isErrorAlertHidden">
   <div class="alert alert-danger" role="alert">
     Impossibile ottenere informazioni sulla storia. Provare a ricaricare la pagina.
   </div>
 </div>
 <!-- END asset alert row -->
 
-<!-- content -->
-<!-- If you want a more advanced configuration: https://www.intricatecloud.io/2019/10/using-angular-innerhtml-to-display-user-generated-content-without-sacrificing-security/ -->
-<div id="content" class="mt-3 p-3 border rounded shadow" [hidden]="!isErrorAlertHidden">
-  <div [innerHtml]="story?.contenuto"></div>
-</div>
-<!-- END content -->
+<!-- editor -->
+<ckeditor *ngIf="story" [(ngModel)]="story.contenuto" disabled="true" [config]="ckConfig" [editor]="Editor"></ckeditor>

@@ -117,4 +117,8 @@ export class MyStoriesComponent implements OnInit {
     this.getMyStories();
   }
 
+  deleteStory(id): void {
+    console.log(id);
+  }
+
 }
