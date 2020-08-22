@@ -58,23 +58,21 @@ Asset.get = (options, result) => {
 
   // logger.log('info', `asset.model.js - get - map boundaries - nlat:${nlat}, slat:${slat}, elon:${elon}, wlon:${wlon}`);
 
-  var query;
+  // Order direction
+  var orderStr;
+  if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
+    orderStr = 'DESC';
+  } else {
+    orderStr = 'ASC';
+  }
+
+  var queryStr;
 
   if (options.namequery !== null) {
     var namequery = '%' + options.namequery + '%';
-    // Descending order or ascending order
-    if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
-      query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 AND lat >= ? AND lat <= ? AND lon >= ? AND lon <= ? AND `nome` LIKE ? ORDER BY ?? DESC LIMIT ? OFFSET ?', [slat, nlat, wlon, elon, namequery, orderby, limit, offset]);
-    } else {
-      query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 AND lat >= ? AND lat <= ? AND lon >= ? AND lon <= ? AND `nome` LIKE ? ORDER BY ?? ASC LIMIT ? OFFSET ?', [slat, nlat, wlon, elon, namequery, orderby, limit, offset]);
-    }
+    queryStr = mysql.format(`SELECT * FROM bene WHERE visible = 1 AND lat >= ? AND lat <= ? AND lon >= ? AND lon <= ? AND nome LIKE ? ORDER BY ?? ${orderStr} LIMIT ? OFFSET ?`, [slat, nlat, wlon, elon, namequery, orderby, limit, offset]);
   } else {
-    // Descending order or ascending order
-    if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
-      query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 AND lat >= ? AND lat <= ? AND lon >= ? AND lon <= ? ORDER BY ?? DESC LIMIT ? OFFSET ?', [slat, nlat, wlon, elon, orderby, limit, offset]);
-    } else {
-      query = mysql.format('SELECT * FROM bene WHERE `visible` = 1 AND lat >= ? AND lat <= ? AND lon >= ? AND lon <= ? ORDER BY ?? ASC LIMIT ? OFFSET ?', [slat, nlat, wlon, elon, orderby, limit, offset]);
-    }
+    queryStr = mysql.format(`SELECT * FROM bene WHERE visible = 1 AND lat >= ? AND lat <= ? AND lon >= ? AND lon <= ? ORDER BY ?? ${orderStr} LIMIT ? OFFSET ?`, [slat, nlat, wlon, elon, orderby, limit, offset]);
   }
 
   // Get a connection from the pool
@@ -104,7 +102,7 @@ Asset.get = (options, result) => {
 
         var totalAssets = res[0].total;
 
-        connection.query(query, (err, res) => {
+        connection.query(queryStr, (err, res) => {
           if (err) {
             connection.release();
             return result(err, null);
