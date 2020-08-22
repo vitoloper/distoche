@@ -29,6 +29,7 @@ const Story = function (story) {
 Story.getAssetStories = (id, options, result) => {
   var orderby, direction, limit, offset;
 
+  // Order field
   if (options.orderby !== null) {
     orderby = options.orderby;
   } else {
@@ -45,23 +46,21 @@ Story.getAssetStories = (id, options, result) => {
     offset = 0;
   }
 
-  var query;
+  // Order direction (DESC or ASC)
+  var orderStr;
+  if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
+    orderStr = 'DESC';
+  } else {
+    orderStr = 'ASC';
+  }
+
+  var queryStr;
 
   if (options.titlequery !== null) {
     var titlequery = '%' + options.titlequery + '%';
-    // Descending order or ascending order
-    if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
-      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `id_bene` = ? AND `visible` = 1 AND `approved` = 1 AND `titolo` LIKE ? ORDER BY ?? DESC LIMIT ? OFFSET ?', [id, titlequery, orderby, limit, offset]);
-    } else {
-      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `id_bene` = ? AND `visible` = 1 AND `approved` = 1 AND `titolo` LIKE ? ORDER BY ?? ASC LIMIT ? OFFSET ?', [id, titlequery, orderby, limit, offset]);
-    }
+    queryStr = mysql.format(`SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE id_bene = ? AND visible = 1 AND approved = 1 AND titolo LIKE ? ORDER BY ?? ${orderStr} LIMIT ? OFFSET ?`, [id, titlequery, orderby, limit, offset]);
   } else {
-    // Descending order or ascending order
-    if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
-      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `id_bene` = ? AND `visible` = 1 AND `approved` = 1 ORDER BY ?? DESC LIMIT ? OFFSET ?', [id, orderby, limit, offset]);
-    } else {
-      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `id_bene` = ? AND `visible` = 1 AND `approved` = 1 ORDER BY ?? ASC LIMIT ? OFFSET ?', [id, orderby, limit, offset]);
-    }
+    queryStr = mysql.format(`SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE id_bene = ? AND visible = 1 AND approved = 1 ORDER BY ?? ${orderStr} LIMIT ? OFFSET ?`, [id, orderby, limit, offset]);
   }
 
   // Get a connection from the pool
@@ -91,7 +90,7 @@ Story.getAssetStories = (id, options, result) => {
 
         var totalStories = res[0].total;
 
-        connection.query(query, (err, res) => {
+        connection.query(queryStr, (err, res) => {
           if (err) {
             connection.release();
             return result(err, null);
@@ -148,23 +147,20 @@ Story.getUserStories = (id, options, result) => {
     offset = 0;
   }
 
-  var query;
+  var orderStr;
+  if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
+    orderStr = 'DESC';
+  } else {
+    orderStr = 'ASC';
+  }
+
+  var queryStr;
 
   if (options.titlequery !== null) {
     var titlequery = '%' + options.titlequery + '%';
-    // Descending order or ascending order
-    if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
-      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `owner` = ? AND `approved` = 1 AND `titolo` LIKE ? ORDER BY ?? DESC LIMIT ? OFFSET ?', [id, titlequery, orderby, limit, offset]);
-    } else {
-      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `owner` = ? AND `approved` = 1 AND `titolo` LIKE ? ORDER BY ?? ASC LIMIT ? OFFSET ?', [id, titlequery, orderby, limit, offset]);
-    }
+    queryStr = mysql.format(`SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE owner = ? AND approved = 1 AND titolo LIKE ? ORDER BY ?? ${orderStr} LIMIT ? OFFSET ?`, [id, titlequery, orderby, limit, offset]);
   } else {
-    // Descending order or ascending order
-    if (options.direction !== null && options.direction.toLowerCase() === 'desc') {
-      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `owner` = ? AND `approved` = 1 ORDER BY ?? DESC LIMIT ? OFFSET ?', [id, orderby, limit, offset]);
-    } else {
-      query = mysql.format('SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE `owner` = ? AND `approved` = 1 ORDER BY ?? ASC LIMIT ? OFFSET ?', [id, orderby, limit, offset]);
-    }
+    queryStr = mysql.format(`SELECT id, approved_at, created_at, modified_at, titolo, descr, cover_img_url, approved, visible, id_bene, owner, approved_by FROM storia WHERE owner = ? AND approved = 1 ORDER BY ?? ${orderStr} LIMIT ? OFFSET ?`, [id, orderby, limit, offset]);
   }
 
   // Get a connection from the pool
@@ -194,7 +190,7 @@ Story.getUserStories = (id, options, result) => {
 
         var totalStories = res[0].total;
 
-        connection.query(query, (err, res) => {
+        connection.query(queryStr, (err, res) => {
           if (err) {
             connection.release();
             return result(err, null);
@@ -285,7 +281,7 @@ Story.create = (newStory, result) => {
       return result(err, null);
     }
 
-    return result (null, {id: res.insertId, ...newStory});
+    return result(null, { id: res.insertId, ...newStory });
   });
 }
 
