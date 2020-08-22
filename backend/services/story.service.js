@@ -4,19 +4,45 @@ const Role = require('../_helpers/role');
 /**
  * Servizio GET storie associate a bene culturale
  * 
+ * @param {*} user - utente (se loggato)
  * @param {*} id - id bene culturale
  * @param {*} options
  * @param {*} result 
  * 
+ * Utente 'esperto' vede:
+ * - le proprie storie (visibili e non visibili)
+ * - le storie degli altri utenti 'fruitori' ed 'esperti' (approvate/non-approvate e visibili)
+ * 
+ * Utente 'fruitore' vede:
+ *  - le proprie storie (visibili e non visibili, approvate e non approvate)
+ *  - le storie degli altri utenti (approvate e visibili)
  */
-exports.getAssetStories = (id, options, result) => {
-  StoryModel.getAssetStories(id, options, (err, data) => {
-    if (err) {
-      return result(err, null);
-    }
+exports.getAssetStories = (user, id, options, result) => {
+  if (user && user.role === Role.esperto) {
+    StoryModel.getAssetStoriesEsperto(user.sub, id, options, (err, data) => {
+      if (err) {
+        return result(err, null);
+      }
 
-    return result(null, data);
-  });
+      return result(null, data);
+    });
+  } else if (user && user.role === Role.fruitore) {
+    StoryModel.getAssetStoriesFruitore(user.sub, id, options, (err, data) => {
+      if (err) {
+        return result(err, null);
+      }
+
+      return result(null, data);
+    });
+  } else {
+    StoryModel.getAssetStories(id, options, (err, data) => {
+      if (err) {
+        return result(err, null);
+      }
+
+      return result(null, data);
+    });
+  }
 }
 
 /**
@@ -83,6 +109,8 @@ exports.updateStory = (id, story, result) => {
 exports.createStory = (user, story, result) => {
   story.owner = user.sub;
 
+  // Fruitore: non approvata
+  // Esperto: approvata automaticamente
   if (user.role === Role.fruitore) {
     story.approved_at = null;
     story.approved = false;

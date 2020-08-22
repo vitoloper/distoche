@@ -1,6 +1,11 @@
 const StoryService = require('../services/story.service');
 const StoryModel = require('../models/story.model');
 
+/**
+ * GET storie di uno specifico bene culturale
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.getAssetStories = (req, res) => {
   options = {
     orderby: null,
@@ -53,7 +58,7 @@ exports.getAssetStories = (req, res) => {
   // Parse cultural asset id
   id = parseInt(id);
 
-  StoryService.getAssetStories(id, options, (err, data) => {
+  StoryService.getAssetStories(req.user, id, options, (err, data) => {
     if (err) {
       return res.status(500).json({ message: err.message || 'Error retrieving stories' });
     }
@@ -134,7 +139,7 @@ exports.getUserStories = (req, res) => {
   // Search query string in story title
   if (titlequery) options.titlequery = titlequery;
 
-  // Parse cultural asset id
+  // Parse user id
   userId = parseInt(userId);
 
   StoryService.getUserStories(userId, options, (err, data) => {
