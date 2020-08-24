@@ -76,7 +76,7 @@
         onError="this.src = 'assets/images/not-available-360x270.png'" alt="Card image caption"
         [routerLink]="'/utente/storie/'+story.id">
       <div class="card-body pointer" [routerLink]="'/utente/storie/'+story.id">
-        <h5 class="card-title text-truncate" [title]="story.titolo">{{story.titolo}}</h5>
+        <h5 class="card-title text-truncate" [title]="story.titolo">{{story.titolo || 'Nessun titolo'}}</h5>
         <p class="card-text line-clamp-3">{{story.descr || 'Nessuna descrizione disponibile.'}}</p>
       </div>
       <div class="card-footer small text-muted">

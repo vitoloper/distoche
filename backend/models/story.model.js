@@ -461,7 +461,7 @@ Story.update = (id, story, result) => {
   queryStr = 'UPDATE storia SET modified_at = ?, titolo = ?, descr = ?, contenuto = ?,  ' +
     'cover_img_url = ?, visible = ? WHERE id = ?';
 
-  sql.query(queryStr, [story.modified_at, story.titolo, story.descr, story.contenuto, story.cover_img_url, story.visible, story.id], (err, res) => {
+  sql.query(queryStr, [story.modified_at, story.titolo, story.descr, story.contenuto, story.cover_img_url, story.visible, id], (err, res) => {
     if (err) {
       logger.error(err);
       return result(err, null);
@@ -486,6 +486,26 @@ Story.create = (newStory, result) => {
     }
 
     return result(null, { id: res.insertId, ...newStory });
+  });
+}
+
+/**
+ * Cancella una storia
+ * 
+ * @param {*} userId 
+ * @param {*} id 
+ * @param {*} result 
+ * 
+ */
+Story.delete = (userId, id, result) => {
+  sql.query('DELETE FROM storia WHERE id = ? AND owner = ?', [id, userId], (err, res) => {
+    if (err) {
+      logger.error(err);
+      return result(err, null);
+    }
+
+    console.log(res);
+    return result(null, res);
   });
 }
 

@@ -195,3 +195,26 @@ exports.createStory = (req, res) => {
     return res.json(data);
   });
 }
+
+exports.deleteStory = (req, res) => {
+  var id = req.params.id;
+
+  if (!id) {
+    return res.status(400).json({ message: 'id required' });
+  }
+
+  if (isNaN(id)) {
+    return res.status(400).json({ message: 'Invalid id' });
+  }
+
+  // Parse story id
+  id = parseInt(id);
+
+  StoryService.deleteStory(req.user, id, (err, data) => {
+    if (err) {
+      return res.status(500).json({message: err.message || 'Error deleting story'});
+    }
+
+    return res.json(data);
+  });
+}

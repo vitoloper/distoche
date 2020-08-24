@@ -94,16 +94,25 @@ export class StoryService {
    */
   updateStory(id, story): Observable<any> {
     return this.http.put<any>(`${this.storiesUrl}/${id}`, story, this.httpOptions)
-    .pipe(catchError(this.handleError));
+      .pipe(catchError(this.handleError));
   }
-  
+
   /**
    * Create new story
    * @param story 
    */
   createStory(story): Observable<any> {
     return this.http.post<any>(`${this.storiesUrl}`, story, this.httpOptions)
-    .pipe(catchError(this.handleError));
+      .pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Delete story
+   * @param id 
+   */
+  deleteStory(id): Observable<any> {
+    return this.http.delete<any>(`${this.storiesUrl}/${id}`, this.httpOptions)
+      .pipe(catchError(this.handleError));
   }
 
 }

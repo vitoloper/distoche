@@ -131,3 +131,21 @@ exports.createStory = (user, story, result) => {
     return result(null, data);
   });
 }
+
+/**
+ * Elimina una storia
+ * 
+ * @param {*} user 
+ * @param {*} id 
+ * @param {*} result 
+ */
+exports.deleteStory = (user, id, result) => {
+
+  StoryModel.delete(user.sub, id, (err, data) => {
+    if (err) {
+      return result(err, null);
+    }
+
+    return result(null, data);
+  });
+}
