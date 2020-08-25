@@ -17,7 +17,8 @@
     <p class="small"><i class="fa fa-user" title="Proprietario" aria-hidden="true"></i>&nbsp;{{asset?.owner_username}}
     </p>
     <form #newStoryForm="ngForm">
-      <button *ngIf="asset" [routerLink]="'/utente/storie/new'" [queryParams]="{'idbene': asset.id}" class="btn btn-primary mt-2">Nuova storia</button>
+      <button *ngIf="asset" [routerLink]="'/utente/storie/new'" [queryParams]="{'idbene': asset.id}"
+        class="btn btn-primary mt-2">Nuova storia</button>
     </form>
   </div>
 </div>
@@ -104,16 +105,29 @@
 <!-- cards rows -->
 <div *ngFor="let row of rows" class="row">
   <div *ngFor="let story of row" class="col-sm-4 d-flex align-items-stretch">
-    <div class="card m-2 p-1 pointer shadow-sm" [routerLink]="'/storie/'+story.id">
-      <img class="card-img-top border" [src]="story.cover_img_url"
-        onError="this.src = 'assets/images/not-available-360x270.png'" alt="Card image caption">
-      <div class="card-body">
+    <div class="card m-2 p-1 shadow-sm">
+      <img class="card-img-top border pointer" [src]="story.cover_img_url"
+        onError="this.src = 'assets/images/not-available-360x270.png'" alt="Card image caption"
+        [routerLink]="story.owner === user.id ? ['/utente/storie',story.id] : ['/storie',story.id]">
+      <div class="card-body pointer"
+        [routerLink]="story.owner === user.id ? ['/utente/storie',story.id] : ['/storie',story.id]">
         <h5 class="card-title text-truncate" [title]="story.titolo">{{story.titolo}}</h5>
         <p class="card-text line-clamp-3">{{story.descr || 'Nessuna descrizione disponibile.'}}</p>
       </div>
       <div class="card-footer small text-muted">
         <span><i class="fa fa-clock-o" title="Data ultima modifica"
             aria-hidden="true"></i>&nbsp;{{(story.modified_at | date: 'dd-MM-yyyy') || 'n.d.'}}
+        </span>
+        <span class="float-right ml-2 pointer"><i [hidden]="story.owner !== user.id" (click)="deleteStory(story.id)"
+            class="fa fa-trash trash" aria-hidden="true" title="Cancella"></i></span>
+        <span class="float-right ml-2 pointer"><i [hidden]="story.owner !== user.id" [routerLink]="'/storie/'+story.id"
+            class="fa fa-file-text-o" aria-hidden="true" title="Visualizza"></i></span>
+        <span class="float-right ml-2"><i [hidden]="story.owner !== user.id || !story.visible" class="fa fa-eye"
+            aria-hidden="true" title="visibile"></i></span>
+        <span class="float-right ml-2"><i [hidden]="story.owner !== user.id || story.visible" class="fa fa-eye-slash"
+            aria-hidden="true" title="non visibile"></i></span>
+        <span class="float-right mr-2"><i [hidden]="story.owner !== user.id" class="fa fa-user"
+            title="Sei il proprietario di questa storia" aria-hidden="true"></i>
         </span>
       </div>
     </div>

@@ -1,3 +1,7 @@
 .pointer {
   cursor: pointer;
 }
+
+.trash {
+  color: red;
+}

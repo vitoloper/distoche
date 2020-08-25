@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { CulturalAssetService } from '../cultural-asset.service';
 import { StoryService } from '../story.service';
+import { AuthenticationService } from '../authentication.service';
+import { User } from '../_models/user';
+import { Role } from '../_models/role';
 
 @Component({
   selector: 'app-cultural-asset-detail',
@@ -14,6 +17,9 @@ export class CulturalAssetDetailComponent implements OnInit {
   stories: any[];
   isAssetErrorAlertHidden;
   isErrorAlertHidden;
+
+  // User
+  user: User;
 
   // Pagination
   totalPages: number;
@@ -33,7 +39,12 @@ export class CulturalAssetDetailComponent implements OnInit {
   // Display rows
   rows = [];
 
-  constructor(private route: ActivatedRoute, private assetService: CulturalAssetService, private storyService: StoryService) { }
+  constructor(private route: ActivatedRoute,
+    private assetService: CulturalAssetService,
+    private storyService: StoryService,
+    private authService: AuthenticationService) {
+      this.authService.user.subscribe(x => this.user = x);
+    }
 
   ngOnInit(): void {
     this.assetId = this.route.snapshot.paramMap.get('id');
@@ -140,6 +151,45 @@ export class CulturalAssetDetailComponent implements OnInit {
     this.offset = this.offset - this.elementsPerPage;
     this.currentPage--;
     this.getAssetStories();
+  }
+
+
+  /**
+   * Delete story
+   * @param id 
+   */
+  deleteStory(id): void {
+    if (confirm('Cancellare la storia?') !== true) return;
+
+    this.storyService.deleteStory(id).subscribe(
+      result => {
+        // Remove story from stories array
+        for (let i = 0; i < this.stories.length; i++) {
+          if (this.stories[i].id === id) this.stories.splice(i, 1);
+        }
+
+        // Arrange data in multiple rows to display it in a grid
+        let rows = [];
+        let currentRow = -1;
+        let currentCol = -1;
+        for (let i = 0; i < this.stories.length; i++) {
+          // Add a new row, each row contains 3 elements
+          if (i % 3 == 0) {
+            rows.push([]);
+            currentRow++;
+            currentCol = 0;
+          }
+
+          rows[currentRow][currentCol] = this.stories[i];
+          currentCol++;
+        }
+
+        this.rows = rows;
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
 }
