@@ -115,4 +115,13 @@ export class StoryService {
       .pipe(catchError(this.handleError));
   }
 
+  /**
+   * Approve story
+   * @param id 
+   */
+  approveStory(id): Observable<any> {
+    return this.http.put<any>(`${this.storiesUrl}/${id}/approve`, {}, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
 }

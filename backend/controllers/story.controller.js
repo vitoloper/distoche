@@ -168,7 +168,7 @@ exports.updateStory = (req, res) => {
 
   StoryService.updateStory(id, story, (err, data) => {
     if (err) {
-      return res.status(500).json({ message: err.message || 'Error saving story'});
+      return res.status(500).json({ message: err.message || 'Error saving story' });
     }
 
     return res.json(data);
@@ -189,7 +189,7 @@ exports.createStory = (req, res) => {
 
   StoryService.createStory(req.user, story, (err, data) => {
     if (err) {
-      return res.status(500).json({ message: err.message || 'Error saving story'});
+      return res.status(500).json({ message: err.message || 'Error saving story' });
     }
 
     return res.json(data);
@@ -212,7 +212,36 @@ exports.deleteStory = (req, res) => {
 
   StoryService.deleteStory(req.user, id, (err, data) => {
     if (err) {
-      return res.status(500).json({message: err.message || 'Error deleting story'});
+      return res.status(500).json({ message: err.message || 'Error deleting story' });
+    }
+
+    return res.json(data);
+  });
+}
+
+/**
+ * PUT Approva storia
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.approveStory = (req, res) => {
+  var id = req.params.id;
+
+  if (!id) {
+    return res.status(400).json({ message: 'id required' });
+  }
+
+  if (isNaN(id)) {
+    return res.status(400).json({ message: 'Invalid id' });
+  }
+
+  // Parse story id
+  id = parseInt(id);
+
+  StoryService.approveStory(req.user, id, (err, data) => {
+    if (err) {
+      return res.status(500).json({ message: err.message || 'Error approving story' });
     }
 
     return res.json(data);

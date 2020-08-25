@@ -562,4 +562,15 @@ Story.delete = (userId, id, result) => {
   });
 }
 
+Story.approve = (approverId, id, result) => {
+  sql.query('UPDATE storia SET approved_at = ?, approved_by = ?, approved = 1 WHERE id = ?', [new Date(), approverId, id], (err, res) => {
+    if (err) {
+      logger.error(err);
+      return result(err, null);
+    }
+
+    return result(null, res);
+  });
+}
+
 module.exports = Story;

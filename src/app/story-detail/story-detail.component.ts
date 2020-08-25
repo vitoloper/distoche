@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { StoryService } from '../story.service';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { AuthenticationService } from '../authentication.service';
+import { User } from '../_models/user';
+import { Role } from '../_models/role';
 
 @Component({
   selector: 'app-story-detail',
@@ -15,12 +18,19 @@ export class StoryDetailComponent implements OnInit {
   contenuto;
   isErrorAlertHidden = true;
 
+  // User
+  user: User;
+
   // CKEditor configuration
   ckConfig = {
     toolbar: []
   };
 
-  constructor(private route: ActivatedRoute, private storyService: StoryService) { }
+  constructor(private authService: AuthenticationService,
+    private route: ActivatedRoute,
+    private storyService: StoryService) {
+    this.authService.user.subscribe(x => this.user = x);
+  }
 
   ngOnInit(): void {
     this.storyId = this.route.snapshot.paramMap.get('id');
@@ -41,6 +51,19 @@ export class StoryDetailComponent implements OnInit {
           console.log(err);
         }
       );
+  }
+
+  approveStory(): void {
+    this.storyService.approveStory(this.story.id).subscribe(
+      result => {
+        // Reload story details
+        this.getStoryDetail();
+      },
+      err => {
+        // TODO: error alert
+        console.log(err);
+      }
+    );
   }
 
 }

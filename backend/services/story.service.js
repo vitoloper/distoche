@@ -179,3 +179,19 @@ exports.deleteStory = (user, id, result) => {
     return result(null, data);
   });
 }
+
+/**
+ * Approva storia
+ * @param {*} id 
+ * @param {*} result 
+ * 
+ */
+exports.approveStory = (approver, id, result) => {
+  StoryModel.approve(approver.sub, id, (err, data) => {
+    if (err) {
+      return result(err, null);
+    }
+
+    return result(null, data);
+  });
+}
