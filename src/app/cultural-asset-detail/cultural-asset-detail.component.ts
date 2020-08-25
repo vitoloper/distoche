@@ -163,28 +163,7 @@ export class CulturalAssetDetailComponent implements OnInit {
 
     this.storyService.deleteStory(id).subscribe(
       result => {
-        // Remove story from stories array
-        for (let i = 0; i < this.stories.length; i++) {
-          if (this.stories[i].id === id) this.stories.splice(i, 1);
-        }
-
-        // Arrange data in multiple rows to display it in a grid
-        let rows = [];
-        let currentRow = -1;
-        let currentCol = -1;
-        for (let i = 0; i < this.stories.length; i++) {
-          // Add a new row, each row contains 3 elements
-          if (i % 3 == 0) {
-            rows.push([]);
-            currentRow++;
-            currentCol = 0;
-          }
-
-          rows[currentRow][currentCol] = this.stories[i];
-          currentCol++;
-        }
-
-        this.rows = rows;
+        this.getAssetStories();
       },
       err => {
         console.log(err);
