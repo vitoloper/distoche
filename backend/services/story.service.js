@@ -48,18 +48,48 @@ exports.getAssetStories = (user, id, options, result) => {
 /**
  * GET dettaglio storia
  * 
+ * @param {*} user - utente (se loggato)
  * @param {*} id 
  * @param {*} result
  * 
+ * Utente 'esperto' vede:
+ * - la mia storia (visibili e non visibili)
+ * - le storie degli altri utenti 'fruitori' ed 'esperti' (approvate/non-approvate e visibili)
+ * 
+ * Utente 'fruitore' vede:
+ *  - la mia storia (visibile e non visibile, approvata e non approvata)
+ *  - la storia di altri utenti (approvata e visibile)
+ * 
+ * Utente pubblico vede:
+ * - le storie visibili e approvate
+ * 
  */
-exports.getOne = (id, result) => {
-  StoryModel.getOne(id, (err, data) => {
-    if (err) {
-      return result(err, null);
-    }
+exports.getOne = (user, id, result) => {
+  if (user && user.role === Role.fruitore) {
+    StoryModel.getOneFruitore(user.sub, id, (err, data) => {
+      if (err) {
+        return result(err, null);
+      }
 
-    return result(null, data);
-  });
+      return result(null, data);
+    });
+  } else if (user && user.role === Role.esperto) {
+    StoryModel.getOneEsperto(user.sub, id, (err, data) => {
+      if (err) {
+        return result(err, null);
+      }
+
+      return result(null, data);
+    });
+  } else {
+    StoryModel.getOne(id, (err, data) => {
+      if (err) {
+        return result(err, null);
+      }
+
+      return result(null, data);
+    });
+  }
 }
 
 /**

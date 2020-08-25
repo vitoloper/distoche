@@ -81,7 +81,7 @@ exports.getOne = (req, res) => {
   // Parse story id
   id = parseInt(id);
 
-  StoryService.getOne(id, (err, data) => {
+  StoryService.getOne(req.user, id, (err, data) => {
     if (err) {
       return res.status(500).json({ message: err.message || 'Error retrieving story' });
     }
@@ -183,7 +183,7 @@ exports.createStory = (req, res) => {
     descr: req.body.descr,
     contenuto: req.body.contenuto,
     cover_img_url: req.body.cover_img_url,
-    visible: true,
+    visible: req.body.visible,
     id_bene: req.body.id_bene
   });
 

@@ -435,7 +435,7 @@ Story.getOne = (id, result) => {
   queryStr = 'SELECT S.id, S.approved_at, S.created_at, S.modified_at, S.titolo, S.descr, S.contenuto, S.cover_img_url, S.approved, S.visible,' +
     ' S.id_bene, O.username as owner_username, A.username as approver_username' +
     ' FROM storia S JOIN utente O ON S.owner = O.id JOIN utente A ON S.approved_by = A.id' +
-    ' WHERE S.id = ?';
+    ' WHERE S.id = ? AND S.visible = 1 AND S.approved = 1';
 
   sql.query(queryStr, id, (err, res) => {
     if (err) {
@@ -443,11 +443,64 @@ Story.getOne = (id, result) => {
       return result(err, null);
     }
 
-    if (res.length > 0)
+    if (res.length > 0) {
       logger.info(`story.model.js - getOne - story id: ${res[0].id}`);
+    }
+
     return result(null, res);
   });
 }; // Story.getOne
+
+/**
+ * Dettaglio storia (utente fruitore)
+ * @param {*} id 
+ * @param {*} result 
+ */
+Story.getOneFruitore = (userId, id, result) => {
+  queryStr = 'SELECT S.id, S.approved_at, S.created_at, S.modified_at, S.titolo, S.descr, S.contenuto, S.cover_img_url, S.approved, S.visible,' +
+    ' S.id_bene, O.username as owner_username, A.username as approver_username' +
+    ' FROM storia S JOIN utente O ON S.owner = O.id LEFT JOIN utente A ON S.approved_by = A.id' +
+    ' WHERE S.id = ? AND ((S.owner = ?) OR (S.owner <> ? AND visible = 1 AND approved = 1))';
+
+  sql.query(queryStr, [id, userId, userId], (err, res) => {
+    if (err) {
+      logger.error(err);
+      return result(err, null);
+    }
+
+    if (res.length > 0) {
+      logger.info(`story.model.js - getOne - story id: ${res[0].id}`);
+    }
+
+    return result(null, res);
+  });
+}; // Story.getOneFruitore
+
+/**
+ * Dettaglio storia (utente esperto)
+ * 
+ * @param {*} id 
+ * @param {*} result 
+ */
+Story.getOneEsperto = (userId, id, result) => {
+  queryStr = 'SELECT S.id, S.approved_at, S.created_at, S.modified_at, S.titolo, S.descr, S.contenuto, S.cover_img_url, S.approved, S.visible,' +
+    ' S.id_bene, O.username as owner_username, A.username as approver_username' +
+    ' FROM storia S JOIN utente O ON S.owner = O.id LEFT JOIN utente A ON S.approved_by = A.id' +
+    ' WHERE S.id = ? AND ((S.owner = ?) OR (S.owner <> ? AND S.visible = 1))';
+
+  sql.query(queryStr, [id, userId, userId], (err, res) => {
+    if (err) {
+      logger.error(err);
+      return result(err, null);
+    }
+
+    if (res.length > 0) {
+      logger.info(`story.model.js - getOne - story id: ${res[0].id}`);
+    }
+
+    return result(null, res);
+  });
+}; // Story.getOneEsperto
 
 /**
  * Update storia
@@ -485,12 +538,13 @@ Story.create = (newStory, result) => {
       return result(err, null);
     }
 
-    return result(null, { id: res.insertId, ...newStory });
+    newStory.id = res.insertId;
+    return result(null, newStory);
   });
 }
 
 /**
- * Cancella una storia
+ * Cancella una storia (appartenente all'utente che la cancella)
  * 
  * @param {*} userId 
  * @param {*} id 
@@ -504,7 +558,6 @@ Story.delete = (userId, id, result) => {
       return result(err, null);
     }
 
-    console.log(res);
     return result(null, res);
   });
 }

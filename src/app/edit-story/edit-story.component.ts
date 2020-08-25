@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { StoryService } from '../story.service';
 import { UploadService } from '../upload.service';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -25,7 +25,7 @@ export class EditStoryComponent implements OnInit {
     extraPlugins: [MyUploadPlugin]
   };
 
-  constructor(private route: ActivatedRoute,
+  constructor(private router: Router, private route: ActivatedRoute,
     private storyService: StoryService,
     private uploadService: UploadService) { }
 
@@ -38,7 +38,7 @@ export class EditStoryComponent implements OnInit {
         titolo: '',
         descr: ''
       };
-      
+
       // Get id_bene (associate story with a specific cultural asset)
       this.idBene = this.route.snapshot.queryParamMap.get("idbene");
       this.story.id_bene = this.idBene;
@@ -101,7 +101,10 @@ export class EditStoryComponent implements OnInit {
           result => {
             this.isSavedOkAlertHidden = false;
             this.isSaveErrorAlertHidden = true;
-            this.story = result;
+            // Go to 'edit' mode
+            this.router.navigate(['/utente/storie', result.id]);
+            this.storyId = result.id;
+            this.getStoryDetail();
           },
           err => {
             this.isSavedOkAlertHidden = true;
