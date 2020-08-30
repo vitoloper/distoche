@@ -18,6 +18,7 @@ import { EditStoryComponent } from './edit-story/edit-story.component';
 
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { MyAssetsComponent } from './my-assets/my-assets.component';
+import { EditAssetComponent } from './edit-asset/edit-asset.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { MyAssetsComponent } from './my-assets/my-assets.component';
     MyStoriesComponent,
     SignupComponent,
     EditStoryComponent,
-    MyAssetsComponent
+    MyAssetsComponent,
+    EditAssetComponent
   ],
   imports: [
     BrowserModule,

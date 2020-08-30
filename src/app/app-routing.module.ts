@@ -12,6 +12,7 @@ import { AuthGuard } from './_helpers/auth.guard';
 import { Role } from './_models/role';
 import { SignupComponent } from './signup/signup.component';
 import { MyAssetsComponent } from './my-assets/my-assets.component';
+import { EditAssetComponent } from './edit-asset/edit-asset.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -31,6 +32,11 @@ const routes: Routes = [
   },
   {
     path: 'utente/beni', component: MyAssetsComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.gestore] }
+  },
+  {
+    path: 'utente/beni/:id', component: EditAssetComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.gestore] }
   },

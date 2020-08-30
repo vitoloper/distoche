@@ -1,0 +1,65 @@
+<div *ngIf="asset" class="row mb-3" [hidden]="!isErrorAlertHidden">
+  <div class="col-sm-4"><img [src]="asset?.cover_img_url" onError="this.src = 'assets/images/not-available-360x270.png'"
+      alt="Immagine bene culturale" class="img-fluid border p-1">
+    <div class="row justify-content-center mt-1">
+      <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+      <button (click)="fileInput.click()" type="button" class="btn btn-secondary btn-sm">Carica immagine</button>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <form class="form" #titleDescForm="ngForm">
+      <input *ngIf="asset !== undefined && asset.nome !== undefined" class="form-control" type="text"
+        placeholder="Titolo" id="titleText" name="titleText" [(ngModel)]="asset.nome" #titleText="ngModel">
+      <textarea *ngIf="asset !== undefined && asset.descr !== undefined" rows="6" class="form-control mt-2"
+        placeholder="Descrizione" id="descrText" name="descrText" [(ngModel)]="asset.descr"
+        #descrText="ngModel"></textarea>
+    </form>
+  </div>
+  <div class="col-sm-2">
+    <p class="small"><i class="fa fa-pencil" title="Data creazione"
+        aria-hidden="true"></i>&nbsp;{{(asset?.created_at | date: 'dd-MM-yyyy') || 'n.d.'}}
+    </p>
+    <p class="small"><i class="fa fa-clock-o" title="Data ultima modifica"
+        aria-hidden="true"></i>&nbsp;{{(asset?.modified_at | date: 'dd-MM-yyyy') || 'n.d.'}}</p>
+    <p class="small"><i class="fa fa-user" title="Proprietario"
+        aria-hidden="true"></i>&nbsp;{{asset?.owner_username || 'n.d.'}}
+    </p>
+    <div class="form-check">
+      <input *ngIf="asset" class="form-check-input" type="checkbox" value="" id="visibleCheck"
+        [(ngModel)]="asset.visible">
+      <label class="form-check-label" for="visibleCheck">
+        visibile
+      </label>
+    </div>
+  </div>
+
+</div> <!-- END row -->
+
+<!-- asset alert row -->
+<div class="row justify-content-center mb-3" [hidden]="isErrorAlertHidden">
+  <div class="alert alert-danger" role="alert">
+    Impossibile ottenere informazioni sul bene culturale. Provare a ricaricare la pagina.
+  </div>
+</div>
+<!-- END asset alert row -->
+
+<!-- Save -->
+<div *ngIf="asset" class="row justify-content-center m-3">
+  <button (click)="saveAsset()" type="button" class="btn btn-primary mb-3">Salva</button>
+</div>
+
+<!-- Save OK alert -->
+<div *ngIf="asset" [hidden]="isSavedOkAlertHidden" class="row justify-content-center">
+  <div class="alert alert-primary" role="alert">
+    Bene culturale salvato correttamente
+  </div>
+</div>
+<!-- END Save OK alert -->
+
+<!-- asset save error alert row -->
+<div *ngIf="asset" class="row justify-content-center" [hidden]="isSaveErrorAlertHidden">
+  <div class="alert alert-danger" role="alert">
+    Errore nel salvataggio del bene culturale. Riprovare.
+  </div>
+</div>
+<!-- END save error alert row -->
