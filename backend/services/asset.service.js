@@ -50,3 +50,23 @@ exports.getUserAssets = (userId, options, result) => {
     return result(null, data);
   });
 }
+
+/**
+ * Update bene culturale
+ * 
+ * @param {*} id 
+ * @param {*} asset 
+ * @param {*} result 
+ * 
+ */
+exports.updateAsset = (id, asset, result) => {
+  asset.modified_at = new Date();
+
+  AssetModel.update(id, asset, (err, data) => {
+    if (err) {
+      return result(err, null);
+    }
+
+    return result(null, asset);
+  });
+}

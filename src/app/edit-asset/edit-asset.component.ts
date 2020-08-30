@@ -70,4 +70,45 @@ export class EditAssetComponent implements OnInit {
       });
   }
 
+  /**
+   * Save asset
+   * 
+   */
+  saveAsset(): void {
+
+    // New cultural asset or editing mode
+    if (this.assetId === 'new') {
+      this.assetService.createAsset(this.asset)
+        .subscribe(
+          result => {
+            this.isSavedOkAlertHidden = false;
+            this.isSaveErrorAlertHidden = true;
+            // Go to 'edit' mode
+            this.router.navigate(['/utente/beni', result.id]);
+            this.assetId = result.id;
+            this.getAssetDetail();
+          },
+          err => {
+            this.isSavedOkAlertHidden = true;
+            this.isSaveErrorAlertHidden = false;
+            console.log(err);
+          }
+        );
+    } else {
+      this.assetService.updateAsset(this.asset.id, this.asset)
+        .subscribe(
+          result => {
+            this.isSavedOkAlertHidden = false;
+            this.isSaveErrorAlertHidden = true;
+            this.asset = result;
+          },
+          err => {
+            this.isSavedOkAlertHidden = true;
+            this.isSaveErrorAlertHidden = false;
+            console.log(err);
+          }
+        );
+    }
+  }
+
 }

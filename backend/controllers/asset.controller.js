@@ -172,3 +172,33 @@ exports.getUserAssets = (req, res) => {
     return res.json(data);
   });
 }
+
+/**
+ * PUT update bene culturale
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.updateAsset = (req, res) => {
+  var id = req.params.id;
+  var asset = req.body;
+
+  if (!id) {
+    return res.status(400).json({ message: 'id required' });
+  }
+
+  if (isNaN(id)) {
+    return res.status(400).json({ message: 'invalid id' });
+  }
+
+  // Parse asset id
+  id = parseInt(id);
+
+  AssetService.updateAsset(id, asset, (err, data) => {
+    if (err) {
+      return res.status(500).json({ message: err.message || 'Error saving asset' });
+    }
+
+    return res.json(data);
+  });
+}

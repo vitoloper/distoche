@@ -253,4 +253,27 @@ Asset.getUserAssets = (id, options, result) => {
   }); // getConnection
 }; // Asset.getUserAssets
 
+/**
+ * Update asset
+ * 
+ * @param {*} id 
+ * @param {*} asset 
+ * @param {*} result 
+ * 
+ */
+Asset.update = (id, asset, result) => {
+  // TODO: lat, lon
+  queryStr = 'UPDATE bene SET modified_at = ?, nome = ?, descr = ?, ' +
+    'cover_img_url = ?, visible = ? WHERE id = ?';
+
+  sql.query(queryStr, [asset.modified_at, asset.nome, asset.descr, asset.cover_img_url, asset.visible, id], (err, res) => {
+    if (err) {
+      logger.error(err);
+      return result(err, null);
+    }
+
+    return result(null, res);
+  });
+}
+
 module.exports = Asset;

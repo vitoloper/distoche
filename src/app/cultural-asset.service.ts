@@ -84,4 +84,23 @@ export class CulturalAssetService {
       .pipe(catchError(this.handleError));
   }
 
+  /**
+   * Update asset
+   * @param id 
+   * @param asset 
+   */
+  updateAsset(id, asset): Observable<any> {
+    return this.http.put<any>(`${this.assetsUrl}/${id}`, asset, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Create new asset
+   * @param asset 
+   */
+  createAsset(asset): Observable<any> {
+    return this.http.post<any>(`${this.assetsUrl}`, asset, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
 }
