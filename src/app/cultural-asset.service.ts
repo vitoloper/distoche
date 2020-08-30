@@ -9,6 +9,7 @@ import { catchError, retry } from 'rxjs/operators';
 export class CulturalAssetService {
 
   assetsUrl = '/api/assets';
+  userAssetsUrl = '/api/user/assets';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -69,6 +70,17 @@ export class CulturalAssetService {
   getAssetDetail(id: any): Observable<any> {
     return this.http
       .get<any>(`${this.assetsUrl}/${id}`, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  getMyAssets(namequery: any, ordering: any, limit: number, offset: number): Observable<any> {
+    return this.http
+      .get<any>(`${this.userAssetsUrl}?namequery=${namequery}&orderby=${ordering.field}&direction=${ordering.direction}&limit=${limit}&offset=${offset}`, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  deleteAsset(id): Observable<any> {
+    return this.http.delete<any>(`${this.assetsUrl}/${id}`, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

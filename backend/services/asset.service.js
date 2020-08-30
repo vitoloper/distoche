@@ -32,3 +32,21 @@ exports.getOne = (id, result) => {
     return result(null, data);
   });
 }
+
+/**
+ * GET beni culturali utente specifico
+ * 
+ * @param {*} userId 
+ * @param {*} options 
+ * @param {*} result 
+ * 
+ */
+exports.getUserAssets = (userId, options, result) => {
+  AssetModel.getUserAssets(userId, options, (err, data) => {
+    if (err) {
+      return result(err, null);
+    }
+
+    return result(null, data);
+  });
+}

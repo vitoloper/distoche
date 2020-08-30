@@ -11,6 +11,7 @@ import { EditStoryComponent } from './edit-story/edit-story.component';
 import { AuthGuard } from './_helpers/auth.guard';
 import { Role } from './_models/role';
 import { SignupComponent } from './signup/signup.component';
+import { MyAssetsComponent } from './my-assets/my-assets.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -27,6 +28,11 @@ const routes: Routes = [
     path: 'utente/storie/:id', component: EditStoryComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.esperto, Role.fruitore] }
+  },
+  {
+    path: 'utente/beni', component: MyAssetsComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.gestore] }
   },
   { path: '**', redirectTo: 'beni' },
 ];

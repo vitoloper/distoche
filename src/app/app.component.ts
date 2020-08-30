@@ -29,4 +29,8 @@ export class AppComponent {
   get isFruitore() {
     return this.user && this.user.role === Role.fruitore;
   }
+
+  get isGestore() {
+    return this.user && this.user.role === Role.gestore;
+  }
 }

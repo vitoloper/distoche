@@ -17,6 +17,7 @@ import { SignupComponent } from './signup/signup.component';
 import { EditStoryComponent } from './edit-story/edit-story.component';
 
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { MyAssetsComponent } from './my-assets/my-assets.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     LoginComponent,
     MyStoriesComponent,
     SignupComponent,
-    EditStoryComponent
+    EditStoryComponent,
+    MyAssetsComponent
   ],
   imports: [
     BrowserModule,
