@@ -3,6 +3,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CulturalAssetService } from '../cultural-asset.service';
 import { UploadService } from '../upload.service';
 
+// import * as L from 'leaflet';
+import 'leaflet';
+import 'leaflet-draw';
+import "leaflet/dist/images/marker-shadow.png";
+declare const L: any;
+
 @Component({
   selector: 'app-edit-asset',
   templateUrl: './edit-asset.component.html',
@@ -14,6 +20,10 @@ export class EditAssetComponent implements OnInit {
   isErrorAlertHidden = true;
   isSavedOkAlertHidden = true;
   isSaveErrorAlertHidden = true;
+  private map;
+  private previousLayer;
+  private currentLayer;
+  drawnItems = new L.FeatureGroup();
 
   constructor(private router: Router, private route: ActivatedRoute,
     private assetService: CulturalAssetService, private uploadService: UploadService) { }
@@ -32,6 +42,76 @@ export class EditAssetComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit(): void {
+    this.initMap();
+
+    // Retrieve assets on map change
+    this.map.on('moveend', () => {
+
+    });
+
+  }
+
+  /**
+   * Initialize map
+   * 
+   */
+  private initMap(): void {
+    this.map = L.map('map', {
+      center: [41.50, 12.51],
+      zoom: 5
+    });
+    const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
+
+    tiles.addTo(this.map);
+
+    // FeatureGroup is to store editable layers
+    var drawnItems = this.drawnItems;
+    this.map.addLayer(drawnItems);
+
+    var drawControl = new L.Control.Draw({
+      draw: {
+        polygon: false,
+        rectangle: false,
+        polyline: false,
+        circle: false,
+        circlemarker: false,
+        marker: true
+      },
+      edit: {
+        featureGroup: drawnItems,
+        edit: false
+      }
+    });
+    this.map.addControl(drawControl);
+
+    this.map.on(L.Draw.Event.CREATED, (event) => {
+      var layer = event.layer;
+      drawnItems.addLayer(layer);
+
+      // Remove previous layer (marker)
+      if (this.currentLayer) {
+        drawnItems.removeLayer(this.currentLayer);
+      }
+
+      // This is the new current layer (marker)
+      this.currentLayer = layer;
+      this.asset.lat = Number(layer.getLatLng().lat.toFixed(3));
+      this.asset.lon = Number(layer.getLatLng().lng.toFixed(3));
+    });
+
+    this.map.on(L.Draw.Event.DELETED, (event) => {
+      this.currentLayer = null;
+      this.asset.lat = null;
+      this.asset.lon = null;
+    });
+
+  } // initMap
+
+
   /**
    * Get asset detail
    * 
@@ -43,6 +123,11 @@ export class EditAssetComponent implements OnInit {
       .subscribe(
         (result) => {
           this.asset = result[0];
+
+          // Update location map (add maker to drawnItems map layer)
+          var marker = L.marker([this.asset.lat, this.asset.lon]);
+          this.currentLayer = marker;
+          this.drawnItems.addLayer(marker);
         }, (err) => {
           this.isErrorAlertHidden = false;
           console.log(err);
