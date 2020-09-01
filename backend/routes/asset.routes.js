@@ -16,4 +16,5 @@ module.exports = (app) => {
   app.get('/api/user/assets', authorize([Role.gestore]), assets.getUserAssets); // Get user assets
   app.put('/api/assets/:id', authorize([Role.gestore]), assets.updateAsset);  // Update asset
   app.post('/api/assets', authorize([Role.gestore]), assets.createAsset); // Create asset
+  app.delete('/api/assets/:id', authorize([Role.gestore]), assets.deleteAsset); // Delete asset
 }

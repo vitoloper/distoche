@@ -1,5 +1,6 @@
 const AssetModel = require('../models/asset.model');
 const AssetService = require('../services/asset.service');
+const Asset = require('../models/asset.model');
 
 /**
  * GET beni culturali (cultural assets)
@@ -203,6 +204,11 @@ exports.updateAsset = (req, res) => {
   });
 }
 
+/**
+ * POST nuovo bene culturale
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.createAsset = (req, res) => {
   var asset = new AssetModel({
     created_at: new Date(),
@@ -217,7 +223,30 @@ exports.createAsset = (req, res) => {
 
   AssetService.createAsset(req.user, asset, (err, data) => {
     if (err) {
-      return res.status(500).json({message: err.message || 'Error creating asset'});
+      return res.status(500).json({ message: err.message || 'Error creating asset' });
+    }
+
+    return res.json(data);
+  });
+}
+
+exports.deleteAsset = (req, res) => {
+  var id = req.params.id;
+
+  if (!id) {
+    return res.status(400).json({ message: 'id required' });
+  }
+
+  if (isNaN(id)) {
+    return res.status(400).json({ message: 'Invalid id' });
+  }
+
+  // Parse asset id
+  id = parseInt(id);
+
+  AssetService.deleteAsset(req.user, id, (err, data) => {
+    if (err) {
+      return res.status(500).json({ message: err.message || 'Error deleting cultural asset' });
     }
 
     return res.json(data);

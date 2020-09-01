@@ -288,4 +288,23 @@ Asset.create = (newAsset, result) => {
   });
 }
 
+/**
+ * Cancella un bene culturale (appartenente all'utente che lo cancella)
+ * 
+ * @param {*} userId 
+ * @param {*} id 
+ * @param {*} result 
+ * 
+ */
+Asset.delete = (userId, id, result) => {
+  sql.query('DELETE FROM bene WHERE id = ? AND owner = ?', [id, userId], (err, res) => {
+    if (err) {
+      logger.error(err);
+      return result(err, null);
+    }
+
+    return result(null, res);
+  });
+}
+
 module.exports = Asset;

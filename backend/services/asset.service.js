@@ -88,3 +88,21 @@ exports.createAsset = (user, asset, result) => {
     return result(null, data);
   });
 }
+
+/**
+ * Elimina un bene culturale
+ * 
+ * @param {*} user 
+ * @param {*} id 
+ * @param {*} result 
+ */
+exports.deleteAsset = (user, id, result) => {
+
+  AssetModel.delete(user.sub, id, (err, data) => {
+    if (err) {
+      return result(err, null);
+    }
+
+    return result(null, data);
+  });
+}
