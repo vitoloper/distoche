@@ -202,3 +202,24 @@ exports.updateAsset = (req, res) => {
     return res.json(data);
   });
 }
+
+exports.createAsset = (req, res) => {
+  var asset = new AssetModel({
+    created_at: new Date(),
+    modified_at: new Date(),
+    nome: req.body.nome,
+    descr: req.body.descr,
+    lat: req.body.lat,
+    lon: req.body.lon,
+    cover_img_url: req.body.cover_img_url,
+    visible: req.body.visible
+  });
+
+  AssetService.createAsset(req.user, asset, (err, data) => {
+    if (err) {
+      return res.status(500).json({message: err.message || 'Error creating asset'});
+    }
+
+    return res.json(data);
+  });
+}

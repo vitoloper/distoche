@@ -16,8 +16,8 @@
     </form>
   </div>
   <div class="col-sm-2">
-    <p class="small"><i class="fa fa-globe" title="Coordinate" aria-hidden="true"></i>&nbsp;{{asset?.lat}}°,
-      {{asset?.lon}}°</p>
+    <p class="small"><i class="fa fa-globe" title="Coordinate" aria-hidden="true"></i>&nbsp;{{asset?.lat || 'n.d.'}}°,
+      {{asset?.lon || 'n.d.'}}°</p>
     <p class="small"><i class="fa fa-pencil" title="Data creazione"
         aria-hidden="true"></i>&nbsp;{{(asset?.created_at | date: 'dd-MM-yyyy') || 'n.d.'}}
     </p>
@@ -72,3 +72,11 @@
   </div>
 </div>
 <!-- END save error alert row -->
+
+<!-- asset position error alert row -->
+<div *ngIf="asset" class="row justify-content-center" [hidden]="isPositionErrorAlertHidden">
+  <div class="alert alert-danger" role="alert">
+    Impostare una posizione sulla mappa prima di salvare.
+  </div>
+</div>
+<!-- END asset position error alert row -->

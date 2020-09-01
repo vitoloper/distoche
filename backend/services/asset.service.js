@@ -70,3 +70,21 @@ exports.updateAsset = (id, asset, result) => {
     return result(null, asset);
   });
 }
+
+/**
+ * Crea un bene culturale
+ * @param {*} user 
+ * @param {*} asset 
+ * @param {*} result 
+ */
+exports.createAsset = (user, asset, result) => {
+  asset.owner = user.sub;
+
+  AssetModel.create(asset, (err, data) => {
+    if (err) {
+      return result(err, null);
+    }
+
+    return result(null, data);
+  });
+}

@@ -276,4 +276,16 @@ Asset.update = (id, asset, result) => {
   });
 }
 
+Asset.create = (newAsset, result) => {
+  sql.query('INSERT into bene SET ?', newAsset, (err, res) => {
+    if (err) {
+      logger.error(err);
+      return result(err, null);
+    }
+
+    newAsset.id = res.insertId;
+    return result(null, newAsset);
+  });
+}
+
 module.exports = Asset;

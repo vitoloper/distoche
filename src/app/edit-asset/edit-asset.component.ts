@@ -20,6 +20,7 @@ export class EditAssetComponent implements OnInit {
   isErrorAlertHidden = true;
   isSavedOkAlertHidden = true;
   isSaveErrorAlertHidden = true;
+  isPositionErrorAlertHidden = true;
   private map;
   private previousLayer;
   private currentLayer;
@@ -34,8 +35,9 @@ export class EditAssetComponent implements OnInit {
     // if id is 'new' we are in creation mode, otherwise we are in editing mode
     if (this.assetId === 'new') {
       this.asset = {
-        titolo: '',
-        descr: ''
+        nome: '',
+        descr: '',
+        visible: false
       };
     } else {
       this.getAssetDetail();
@@ -161,6 +163,12 @@ export class EditAssetComponent implements OnInit {
    */
   saveAsset(): void {
 
+    if (!this.asset.lat || !this.asset.lon) {
+      this.isSavedOkAlertHidden = true;
+      this.isPositionErrorAlertHidden = false;
+      return;
+    }
+
     // New cultural asset or editing mode
     if (this.assetId === 'new') {
       this.assetService.createAsset(this.asset)
@@ -184,11 +192,13 @@ export class EditAssetComponent implements OnInit {
         .subscribe(
           result => {
             this.isSavedOkAlertHidden = false;
+            this.isPositionErrorAlertHidden = true;
             this.isSaveErrorAlertHidden = true;
             this.asset = result;
           },
           err => {
             this.isSavedOkAlertHidden = true;
+            this.isPositionErrorAlertHidden = true;
             this.isSaveErrorAlertHidden = false;
             console.log(err);
           }
