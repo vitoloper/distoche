@@ -2,6 +2,17 @@ const UserModel = require('../models/user.model');
 const UserService = require('../services/user.service');
 
 /**
+ * Email validation helper function
+ */
+function validateEmail(email) {
+  // \S: match a character different than white space
+  // +: one or more times
+  // \.: match dot
+  var re = /\S+@\S+\.\S+/;
+  return re.test(email);
+}
+
+/**
  * Authenticate an user
  * 
  * @param {*} req 
@@ -46,9 +57,13 @@ exports.signup = (req, res) => {
     return res.status(400).json({ message: 'Missing parameter(s)' });
   }
 
+  if (!validateEmail(userdata.email)) {
+    return res.status(400).json({ message: 'Invalid e-mail' });
+  }
+
   UserService.signup(userdata, (err, data) => {
     if (err) {
-      return res.status(400).json({message: err.message || 'Signup error'});
+      return res.status(400).json({ message: err.message || 'Signup error' });
     }
 
     return res.status(200).json(data);
