@@ -25,6 +25,12 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
+    if (!this.username || !this.password) {
+      this.errorText = 'I campi username e password sono obbligatori.'
+      this.isErrorAlertHidden = false;
+      return;
+    }
+
     this.isErrorAlertHidden = true;
     this.authService.login(this.username, this.password)
       .pipe(first())
@@ -39,6 +45,11 @@ export class LoginComponent implements OnInit {
         }
 
         this.isErrorAlertHidden = false;
+
+        // Scroll to the bottom of the page
+        setTimeout(() => {
+          window.scrollTo(0, document.body.scrollHeight);
+        }, 150);
       });
   }
 }

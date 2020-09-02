@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-  
+
   data = {
     username: null,
     email: null,
@@ -28,12 +28,47 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  validateEmail(email) {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  }
+
   onSubmit(): void {
     this.isErrorAlertHidden = true;
+
+    if (!this.data.username || !this.data.email || !this.data.password || !this.passwordConfirm) {
+      this.errorText = 'I campi contrassegnati in rosso sono obbligatori.';
+      this.isErrorAlertHidden = false;
+
+      // Scroll to the bottom of the page
+      setTimeout(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+      }, 150);
+
+      return;
+    }
+
+    if (!this.validateEmail(this.data.email)) {
+      this.errorText = 'Email non valida';
+      this.isErrorAlertHidden = false;
+
+      // Scroll to the bottom of the page
+      setTimeout(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+      }, 150);
+      
+      return;
+    }
 
     if (this.data.password !== this.passwordConfirm) {
       this.errorText = 'Le password non coincidono. Digitare correttamente la password di conferma.';
       this.isErrorAlertHidden = false;
+
+      // Scroll to the bottom of the page
+      setTimeout(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+      }, 150);
+
       return;
     }
 

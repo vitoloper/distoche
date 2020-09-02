@@ -3,7 +3,7 @@
   </div>
 
   <div class="col-sm-6">
-    <form class="border p-3 shadow" #loginForm="ngForm" (ngSubmit)="onSubmit()">
+    <form novalidate class="border p-3 shadow" #loginForm="ngForm" (ngSubmit)="onSubmit()">
       <div class="form-row text-center">
         <div class="col-12">
           <img src="assets/images/logo_distoche.png" class="img-fluid">
@@ -12,14 +12,14 @@
 
       <div class="form-group mt-2">
         <label for="usernameText">Username</label>
-        <input type="text" class="form-control" id="usernameText" name="usernameText" placeholder="Username"
+        <input type="text" class="form-control" id="usernameText" name="usernameText" placeholder="Username" required
           [(ngModel)]="username" #usernameText="ngModel">
       </div>
 
       <div class="form-group">
         <label for="passwordText">Password</label>
         <input type="password" class="form-control" id="passwordText" name="passwordText" placeholder="Password"
-          [(ngModel)]="password" #passwordText="ngModel">
+          required [(ngModel)]="password" #passwordText="ngModel">
       </div>
 
       <div class="form-row text-center">
@@ -27,15 +27,16 @@
           <button type="submit" class="btn btn-primary">Login</button>
         </div>
       </div>
-    </form>
 
-    <!-- alert row -->
-    <div class="row justify-content-center m-3" [hidden]="isErrorAlertHidden">
-      <div class="alert alert-danger" role="alert">
-        {{errorText}}
+      <!-- alert row -->
+      <div class="form-row justify-content-center m-3" *ngIf="!isErrorAlertHidden">
+        <div class="alert alert-danger" role="alert">
+          {{errorText}}
+        </div>
       </div>
-    </div>
-  </div>
+
+    </form>
+  </div> <!-- END col -->
 
   <div class="col">
   </div>

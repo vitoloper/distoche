@@ -12,13 +12,13 @@
 
       <div class="form-group">
         <label for="usernameText">Username</label>
-        <input type="text" class="form-control" id="usernameText" name="usernameText" placeholder="Username"
+        <input type="text" class="form-control" id="usernameText" name="usernameText" placeholder="Username" required
           [(ngModel)]="data.username" #usernameText="ngModel">
       </div>
 
       <div class="form-group">
         <label for="emailText">E-mail</label>
-        <input type="text" class="form-control" id="emailText" name="emailText" placeholder="E-mail"
+        <input type="text" class="form-control" id="emailText" name="emailText" placeholder="E-mail" required
           [(ngModel)]="data.email" #emailText="ngModel">
       </div>
 
@@ -54,12 +54,12 @@
       <div class="form-group">
         <label for="passwordText">Password</label>
         <input type="password" class="form-control" id="passwordText" name="passwordText" placeholder="Password"
-          [(ngModel)]="data.password" #passwordText="ngModel">
+          required [(ngModel)]="data.password" #passwordText="ngModel">
       </div>
 
       <div class="form-group">
         <label for="passwordConfirmText">Conferma password</label>
-        <input type="password" class="form-control" id="passwordConfirmText" name="passwordConfirmText"
+        <input type="password" class="form-control" id="passwordConfirmText" name="passwordConfirmText" required
           placeholder="Password" [(ngModel)]="passwordConfirm" #passwordConfirmText="ngModel">
       </div>
 
@@ -68,15 +68,16 @@
           <button type="submit" class="btn btn-primary">Registrati</button>
         </div>
       </div>
+
+      <!-- alert row -->
+      <div class="form-row justify-content-center m-3" *ngIf="!isErrorAlertHidden">
+        <div class="alert alert-danger" role="alert">
+          {{errorText}}
+        </div>
+      </div>
     </form>
 
-    <!-- alert row -->
-    <div class="row justify-content-center m-3" [hidden]="isErrorAlertHidden">
-      <div class="alert alert-danger" role="alert">
-        {{errorText}}
-      </div>
-    </div>
-  </div>
+  </div> <!-- END col -->
 
   <div class="col-md-3">
   </div>
