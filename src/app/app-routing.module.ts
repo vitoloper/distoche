@@ -13,10 +13,12 @@ import { Role } from './_models/role';
 import { SignupComponent } from './signup/signup.component';
 import { MyAssetsComponent } from './my-assets/my-assets.component';
 import { EditAssetComponent } from './edit-asset/edit-asset.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
+  { path: 'profile', component: ProfileComponent },
   { path: 'beni', component: CulturalAssetsComponent },
   { path: 'beni/:id', component: CulturalAssetDetailComponent },
   { path: 'storie/:id', component: StoryDetailComponent },

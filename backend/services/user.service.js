@@ -71,3 +71,18 @@ exports.signup = (userdata, result) => {
         });
     }); // bcrypt.hash
 } // signup
+
+/**
+ * 
+ * @param {*} user 
+ * @param {*} result 
+ */
+exports.getMyUser = (user, result) => {
+    UserModel.getUser(user.sub, (err, data) => {
+        if (err) {
+            return result(err, null);
+        }
+
+        return result(null, data);
+    });
+} // getMyUser

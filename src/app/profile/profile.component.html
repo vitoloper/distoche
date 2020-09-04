@@ -1,0 +1,71 @@
+<div class="row">
+  <div class="col-sm-2">
+    <img class="img-fluid" src="assets/images/user-placeholder.png" width="130" height="130">
+  </div>
+  <div class="col-sm-10">
+    <h4>{{user?.username}}</h4>
+    <strong>{{user?.email}}</strong><br>
+    <u>ID</u>: {{user?.id}}<br>
+    <u>Ruolo</u>: {{user?.role}} <br>
+    Abilitato: <i *ngIf="user.enabled" class="fa fa-check" aria-hidden="true"></i><i *ngIf="!user.enabled"
+      class="fa fa-times" aria-hidden="true"></i><br>
+    Data creazione profilo: {{user?.created_at || 'n.d.'}}<br>
+    Data ultima modifica profilo: {{user?.modified_at || 'n.d.'}}<br>
+  </div>
+</div>
+
+<div *ngIf="user" class="row mt-3">
+  <div class="col">
+    <form #accountForm="ngForm" (ngSubmit)="onSubmit()">
+      <h3>Account</h3>
+      <div class="form-group row">
+        <label class="col-sm-2" for="usernameText">Username</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="usernameText" name="usernameText" placeholder="Username"
+            [(ngModel)]="user.username" #usernameText="ngModel">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2" for="emailText">E-mail</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="emailText" name="emailText" placeholder="E-mail"
+            [(ngModel)]="user.email" #emailText="ngModel">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2" for="nomeText">Nome</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="nomeText" name="nomeText" placeholder="Nome"
+            [(ngModel)]="user.nome" #nomeText="ngModel">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2" for="cognomeText">Cognome</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="cognomeText" name="cognomeText" placeholder="Cognome"
+            [(ngModel)]="user.cognome" #cognomeText="ngModel">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2" for="dataNascita">Data di nascita</label>
+        <div class="col-sm-10">
+          <input type="date" class="form-control" id="dataNascita" name="dataNascita" [(ngModel)]="user.data_nascita"
+            #dataNascita="ngModel">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2" for="cittaText">Città di residenza</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="cittaText" name="cittaText" placeholder="Città"
+            [(ngModel)]="user.citta_nascita" #cittaText="ngModel">
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

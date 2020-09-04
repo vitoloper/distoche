@@ -13,10 +13,10 @@ const User = function (user) {
   this.email = user.email;
   this.nome = user.nome;
   this.cognome = user.cognome;
-  this.sesso = user.sesso;
+  this.sesso = user.sesso;  // Not used, to be removed
   this.data_nascita = user.data_nascita;
   this.citta_residenza = user.citta_residenza;
-  this.short_bio = user.short_bio;
+  this.short_bio = user.short_bio; // Not used
   this.profile_img_url = user.profile_img_url;
   this.enabled = user.enabled;
 }
@@ -67,6 +67,22 @@ User.create = (newUser, result) => {
     logger.info(`Created new user with id ${res.insertId}`);
     const {password, ...newUserWithoutPassword } = newUser;
     return result(null, {id: res.insertId, ...newUserWithoutPassword});
+  });
+}
+
+/**
+ * Get user information
+ * @param {*} userId 
+ * @param {*} result 
+ */
+User.getUser = (userId, result) => {
+  sql.query('SELECT * FROM utente WHERE id = ?', [userId], (err, res) => {
+    if (err) {
+      logger.error(err);
+      return result(err, null);
+    }
+
+    return result(null, res);
   });
 }
 

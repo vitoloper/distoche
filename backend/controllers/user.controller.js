@@ -80,3 +80,19 @@ exports.signup = (req, res) => {
 exports.testauth = (req, res) => {
   return res.status(200).json({ message: 'If you can see this it means you are authenticated.' });
 }
+
+/**
+ * Get my profile information
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getMyUser = (req, res) => {
+  return UserService.getMyUser(req.user, (err, data) => {
+    if (err) {
+      return res.status(500).json({ message: 'Get profile information error' });
+    }
+    
+    return res.status(200).json(data);
+  });
+}
