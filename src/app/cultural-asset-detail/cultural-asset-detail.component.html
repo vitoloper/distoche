@@ -17,7 +17,7 @@
     <p class="small"><i class="fa fa-user" title="Proprietario" aria-hidden="true"></i>&nbsp;{{asset?.owner_username}}
     </p>
     <form #newStoryForm="ngForm">
-      <button *ngIf="asset && user" [routerLink]="'/utente/storie/new'" [queryParams]="{'idbene': asset.id}"
+      <button *ngIf="asset && user && (user.role === 'fruitore' || user.role === 'esperto')" [routerLink]="'/utente/storie/new'" [queryParams]="{'idbene': asset.id}"
         class="btn btn-primary mt-2">Nuova storia</button>
     </form>
   </div>
