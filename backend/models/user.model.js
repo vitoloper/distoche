@@ -65,8 +65,8 @@ User.create = (newUser, result) => {
     }
 
     logger.info(`Created new user with id ${res.insertId}`);
-    const {password, ...newUserWithoutPassword } = newUser;
-    return result(null, {id: res.insertId, ...newUserWithoutPassword});
+    const { password, ...newUserWithoutPassword } = newUser;
+    return result(null, { id: res.insertId, ...newUserWithoutPassword });
   });
 }
 
@@ -84,6 +84,26 @@ User.getUser = (userId, result) => {
 
     return result(null, res);
   });
+}
+
+/**
+ * Update user information
+ * 
+ * @param {*} userId 
+ * @param {*} user 
+ * @param {*} result 
+ */
+User.updateUser = (userId, user, result) => {
+  queryStr = 'UPDATE utente SET modified_at = ?, username = ?, email = ?, nome = ?, cognome = ?, data_nascita = ?, citta_residenza = ? WHERE id = ?';
+  sql.query(queryStr, [user.modified_at, user.username, user.email, user.nome, user.cognome, user.data_nascita, user.citta_residenza, userId],
+    (err, res) => {
+      if (err) {
+        logger.error(err);
+        return result(err, null);
+      }
+
+      return result(null, res);
+    });
 }
 
 module.exports = User;

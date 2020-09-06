@@ -3,25 +3,25 @@
     <img class="img-fluid" src="assets/images/user-placeholder.png" width="130" height="130">
   </div>
   <div class="col-sm-10">
-    <h4>{{user?.username}}</h4>
+    <h4>{{user?.username !== '' ? user?.username : 'n.d.'}}</h4>
     <strong>{{user?.email}}</strong><br>
     <u>ID</u>: {{user?.id}}<br>
     <u>Ruolo</u>: {{user?.role}} <br>
-    Abilitato: <i *ngIf="user.enabled" class="fa fa-check" aria-hidden="true"></i><i *ngIf="!user.enabled"
+    Abilitato: <i *ngIf="user && user.enabled" class="fa fa-check" aria-hidden="true"></i><i *ngIf="!user || !user.enabled"
       class="fa fa-times" aria-hidden="true"></i><br>
-    Data creazione profilo: {{user?.created_at || 'n.d.'}}<br>
-    Data ultima modifica profilo: {{user?.modified_at || 'n.d.'}}<br>
+    Data creazione profilo: {{(user?.created_at | date: 'dd-MM-yyyy')|| 'n.d.'}}<br>
+    Data ultima modifica profilo: {{(user?.modified_at | date: 'dd-MM-yyyy')|| 'n.d.'}}<br>
   </div>
 </div>
 
-<div *ngIf="user" class="row mt-3">
+<div *ngIf="user" class="row mt-3 mb-3">
   <div class="col">
     <form #accountForm="ngForm" (ngSubmit)="onSubmit()">
       <h3>Account</h3>
       <div class="form-group row">
         <label class="col-sm-2" for="usernameText">Username</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" id="usernameText" name="usernameText" placeholder="Username"
+          <input type="text" class="form-control" id="usernameText" name="usernameText" placeholder="Username" required
             [(ngModel)]="user.username" #usernameText="ngModel">
         </div>
       </div>
@@ -29,7 +29,7 @@
       <div class="form-group row">
         <label class="col-sm-2" for="emailText">E-mail</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" id="emailText" name="emailText" placeholder="E-mail"
+          <input type="text" class="form-control" id="emailText" name="emailText" placeholder="E-mail" required
             [(ngModel)]="user.email" #emailText="ngModel">
         </div>
       </div>
@@ -62,10 +62,32 @@
         <label class="col-sm-2" for="cittaText">Città di residenza</label>
         <div class="col-sm-10">
           <input type="text" class="form-control" id="cittaText" name="cittaText" placeholder="Città"
-            [(ngModel)]="user.citta_nascita" #cittaText="ngModel">
+            [(ngModel)]="user.citta_residenza" #cittaText="ngModel">
         </div>
       </div>
 
+      <div class="form-row text-center">
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Salva</button>
+        </div>
+      </div>
     </form>
   </div>
 </div>
+
+
+<!-- Save OK alert -->
+<div *ngIf="user" [hidden]="isSavedOkAlertHidden" class="row justify-content-center">
+  <div class="alert alert-primary" role="alert">
+    Profilo modificato correttamente.
+  </div>
+</div>
+<!-- END Save OK alert -->
+
+<!-- Save error alert row -->
+<div *ngIf="user" class="row justify-content-center" [hidden]="isSaveErrorAlertHidden">
+  <div class="alert alert-danger" role="alert">
+    {{errorText}}
+  </div>
+</div>
+<!-- END save error alert row -->

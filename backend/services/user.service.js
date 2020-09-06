@@ -73,6 +73,7 @@ exports.signup = (userdata, result) => {
 } // signup
 
 /**
+ * Get my user profile
  * 
  * @param {*} user 
  * @param {*} result 
@@ -86,3 +87,19 @@ exports.getMyUser = (user, result) => {
         return result(null, data);
     });
 } // getMyUser
+
+/**
+ * Update my usr profile
+ * 
+ */
+exports.updateMyUser = (id, user, result) => {
+    user.modified_at = new Date();
+
+    UserModel.updateUser(id, user, (err, data) => {
+        if (err) {
+            return result(err, null);
+        }
+
+        return result(null, data);
+    });
+} // updateMyUser

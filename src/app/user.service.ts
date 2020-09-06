@@ -38,17 +38,30 @@ export class UserService {
     if (error.error.message) {
       userMessage = error.error.message;
     } else {
-      userMessage = 'Cultural asset operation error';
+      userMessage = 'User operation error';
     }
 
     return throwError(userMessage);
   };
 
   /**
-   * Get my user information
+   * Get my user profile information
+   * 
    */
   getMyUser(): Observable<any> {
     return this.http.get<any>(`${this.userUrl}/me`)
-    .pipe(catchError(this.handleError));
+      .pipe(catchError(this.handleError));
   }
+
+  /**
+   * Update user information
+   * 
+   * @param id 
+   * @param user 
+   */
+  updateMyUser(user): Observable<any> {
+    return this.http.put<any>(`${this.userUrl}/me`, user, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
 }

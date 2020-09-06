@@ -90,9 +90,27 @@ exports.testauth = (req, res) => {
 exports.getMyUser = (req, res) => {
   return UserService.getMyUser(req.user, (err, data) => {
     if (err) {
-      return res.status(500).json({ message: 'Get profile information error' });
+      return res.status(500).json({ message: err.message || 'Get profile information error' });
     }
     
+    return res.status(200).json(data);
+  });
+}
+
+/**
+ * Update my user profile information
+ * @param {*} req 
+ * @param {*} res
+ *  
+ */
+exports.updateMyUser = (req, res) => {
+  var user = req.body;
+
+  return UserService.updateMyUser(req.user.sub, user, (err, data) => {
+    if (err) {
+      return res.status(500).json({ message: err.message || 'Update profile information error'})
+    }
+
     return res.status(200).json(data);
   });
 }
