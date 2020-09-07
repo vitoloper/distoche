@@ -101,6 +101,7 @@ export class EditStoryComponent implements OnInit {
           result => {
             this.isSavedOkAlertHidden = false;
             this.isSaveErrorAlertHidden = true;
+            this.scrollToBottom();
             // Go to 'edit' mode
             this.router.navigate(['/utente/storie', result.id]);
             this.storyId = result.id;
@@ -109,6 +110,7 @@ export class EditStoryComponent implements OnInit {
           err => {
             this.isSavedOkAlertHidden = true;
             this.isSaveErrorAlertHidden = false;
+            this.scrollToBottom();
             console.log(err);
           }
         );
@@ -119,14 +121,23 @@ export class EditStoryComponent implements OnInit {
             this.isSavedOkAlertHidden = false;
             this.isSaveErrorAlertHidden = true;
             this.story = result;
+            this.scrollToBottom();
           },
           err => {
             this.isSavedOkAlertHidden = true;
             this.isSaveErrorAlertHidden = false;
+            this.scrollToBottom();
             console.log(err);
           }
         );
     }
+  }
+
+  // Scroll to the bottom of the page
+  scrollToBottom(): void {
+    setTimeout(() => {
+      window.scrollTo(0, document.body.scrollHeight);
+    }, 150);
   }
 
 } // END EditStoryComponent
