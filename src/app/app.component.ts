@@ -30,7 +30,7 @@ export class AppComponent {
     return this.user && this.user.role === Role.fruitore;
   }
 
-  get isGestore() {
-    return this.user && this.user.role === Role.gestore;
+  get isAmministratore() {
+    return this.user && this.user.role === Role.amministratore;
   }
 }

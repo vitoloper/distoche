@@ -13,8 +13,8 @@ module.exports = (app) => {
   app.get('/api/assets/:id/stories',
     jwt({ secret, algorithms: ['HS256'], credentialsRequired: false }),
     stories.getAssetStories);  // Get stories associated with asset (identify registered users while still providing access to unregistered users)
-  app.get('/api/user/assets', authorize([Role.gestore]), assets.getUserAssets); // Get user assets
-  app.put('/api/assets/:id', authorize([Role.gestore]), assets.updateAsset);  // Update asset
-  app.post('/api/assets', authorize([Role.gestore]), assets.createAsset); // Create asset
-  app.delete('/api/assets/:id', authorize([Role.gestore]), assets.deleteAsset); // Delete asset
+  app.get('/api/user/assets', authorize([Role.amministratore]), assets.getUserAssets); // Get user assets
+  app.put('/api/assets/:id', authorize([Role.amministratore]), assets.updateAsset);  // Update asset
+  app.post('/api/assets', authorize([Role.amministratore]), assets.createAsset); // Create asset
+  app.delete('/api/assets/:id', authorize([Role.amministratore]), assets.deleteAsset); // Delete asset
 }

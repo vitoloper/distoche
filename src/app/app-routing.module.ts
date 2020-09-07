@@ -35,12 +35,12 @@ const routes: Routes = [
   {
     path: 'utente/beni', component: MyAssetsComponent,
     canActivate: [AuthGuard],
-    data: { roles: [Role.gestore] }
+    data: { roles: [Role.amministratore] }
   },
   {
     path: 'utente/beni/:id', component: EditAssetComponent,
     canActivate: [AuthGuard],
-    data: { roles: [Role.gestore] }
+    data: { roles: [Role.amministratore] }
   },
   { path: '**', redirectTo: 'beni' },
 ];

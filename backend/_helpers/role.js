@@ -1,6 +1,6 @@
 module.exports = {
   superadmin: 'superadmin',
-  gestore: 'gestore',
+  amministratore: 'amministratore',
   esperto: 'esperto',
   fruitore: 'fruitore'
 }
