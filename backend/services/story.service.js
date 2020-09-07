@@ -118,8 +118,22 @@ exports.getUserStories = (userId, options, result) => {
  * @param {*} result 
  * 
  */
-exports.updateStory = (id, story, result) => {
+exports.updateStory = (user, id, story, result) => {
   story.modified_at = new Date();
+
+  // Fruitore: la storia non viene riportata in stato 'not approved' dopo la modifica
+  // Esperto: la storia viene automaticamente approvata
+  if (user.role === Role.fruitore) {
+    story.approved_at = null;
+    story.approved = false;
+    story.approved_by = null;
+  } else if (user.role === Role.esperto) {
+    story.approved_at = new Date();
+    story.approved = true;
+    story.approved_by = user.sub;
+  } else {
+    return result({ message: 'invalid role' }, null); 
+  }
 
   StoryModel.update(id, story, (err, data) => {
     if (err) {

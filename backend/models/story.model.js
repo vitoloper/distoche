@@ -512,9 +512,9 @@ Story.getOneEsperto = (userId, id, result) => {
  */
 Story.update = (id, story, result) => {
   queryStr = 'UPDATE storia SET modified_at = ?, titolo = ?, descr = ?, contenuto = ?,  ' +
-    'cover_img_url = ?, visible = ? WHERE id = ?';
+    'cover_img_url = ?, visible = ?, approved_at = ?, approved = ?, approved_by = ? WHERE id = ?';
 
-  sql.query(queryStr, [story.modified_at, story.titolo, story.descr, story.contenuto, story.cover_img_url, story.visible, id], (err, res) => {
+  sql.query(queryStr, [story.modified_at, story.titolo, story.descr, story.contenuto, story.cover_img_url, story.visible, story.approved_at, story.approved, story.approved_by, id], (err, res) => {
     if (err) {
       logger.error(err);
       return result(err, null);

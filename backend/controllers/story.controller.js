@@ -166,7 +166,7 @@ exports.updateStory = (req, res) => {
   // Parse story id
   id = parseInt(id);
 
-  StoryService.updateStory(id, story, (err, data) => {
+  StoryService.updateStory(req.user, id, story, (err, data) => {
     if (err) {
       return res.status(500).json({ message: err.message || 'Error saving story' });
     }
