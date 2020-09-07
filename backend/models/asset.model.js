@@ -262,11 +262,10 @@ Asset.getUserAssets = (id, options, result) => {
  * 
  */
 Asset.update = (id, asset, result) => {
-  // TODO: lat, lon
   queryStr = 'UPDATE bene SET modified_at = ?, nome = ?, descr = ?, ' +
-    'cover_img_url = ?, visible = ? WHERE id = ?';
+    'cover_img_url = ?, lat = ?, lon = ?, visible = ? WHERE id = ?';
 
-  sql.query(queryStr, [asset.modified_at, asset.nome, asset.descr, asset.cover_img_url, asset.visible, id], (err, res) => {
+  sql.query(queryStr, [asset.modified_at, asset.nome, asset.descr, asset.cover_img_url, asset.lat, asset.lon, asset.visible, id], (err, res) => {
     if (err) {
       logger.error(err);
       return result(err, null);
