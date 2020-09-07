@@ -166,6 +166,7 @@ export class EditAssetComponent implements OnInit {
     if (!this.asset.lat || !this.asset.lon) {
       this.isSavedOkAlertHidden = true;
       this.isPositionErrorAlertHidden = false;
+      this.scrollToBottom();
       return;
     }
 
@@ -176,6 +177,8 @@ export class EditAssetComponent implements OnInit {
           result => {
             this.isSavedOkAlertHidden = false;
             this.isSaveErrorAlertHidden = true;
+            this.isPositionErrorAlertHidden = true;
+            this.scrollToBottom();
             // Go to 'edit' mode
             this.router.navigate(['/utente/beni', result.id]);
             this.assetId = result.id;
@@ -184,7 +187,9 @@ export class EditAssetComponent implements OnInit {
           err => {
             this.isSavedOkAlertHidden = true;
             this.isSaveErrorAlertHidden = false;
+            this.isPositionErrorAlertHidden = true;
             console.log(err);
+            this.scrollToBottom();
           }
         );
     } else {
@@ -195,15 +200,24 @@ export class EditAssetComponent implements OnInit {
             this.isPositionErrorAlertHidden = true;
             this.isSaveErrorAlertHidden = true;
             this.asset = result;
+            this.scrollToBottom();
           },
           err => {
             this.isSavedOkAlertHidden = true;
             this.isPositionErrorAlertHidden = true;
             this.isSaveErrorAlertHidden = false;
             console.log(err);
+            this.scrollToBottom();
           }
         );
     }
+  }
+
+  // Scroll to the bottom of the page
+  scrollToBottom(): void {
+    setTimeout(() => {
+      window.scrollTo(0, document.body.scrollHeight);
+    }, 150);
   }
 
 }
