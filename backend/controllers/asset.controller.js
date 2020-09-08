@@ -104,7 +104,7 @@ exports.getOne = (req, res) => {
 
   id = parseInt(id);
 
-  AssetService.getOne(id, (err, data) => {
+  AssetService.getOne(req.user, id, (err, data) => {
     if (err) {
       return res.status(500).json({ message: err.message || 'Error retrieving asset' });
     }

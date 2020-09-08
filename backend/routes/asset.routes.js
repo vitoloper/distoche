@@ -9,7 +9,9 @@ const { secret } = require('../config/jwt.config.json');
 module.exports = (app) => {
 
   app.get('/api/assets', assets.get);   // Get cultural assets
-  app.get('/api/assets/:id', assets.getOne);  // Get one cultural asset (detail)
+  app.get('/api/assets/:id',
+    jwt({ secret, algorithms: ['HS256'], credentialsRequired: false }),
+    assets.getOne);  // Get one cultural asset (detail)
   app.get('/api/assets/:id/stories',
     jwt({ secret, algorithms: ['HS256'], credentialsRequired: false }),
     stories.getAssetStories);  // Get stories associated with asset (identify registered users while still providing access to unregistered users)

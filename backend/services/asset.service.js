@@ -1,4 +1,5 @@
 const AssetModel = require('../models/asset.model');
+const Role = require('../_helpers/role');
 
 /**
  * Servizio GET beni culturali
@@ -18,19 +19,31 @@ exports.get = (options, result) => {
 }
 
 /**
- * Servizio GET bene culturale (dettaglio)
+ * Servizio GET bene culturale
  * 
- * @param {*} result 
- * 
+ * @param {*} user 
+ * @param {*} id 
+ * @param {*} result
+ *  
  */
-exports.getOne = (id, result) => {
-  AssetModel.getOne(id, (err, data) => {
-    if (err) {
-      return result(err, null);
-    }
-
-    return result(null, data);
-  });
+exports.getOne = (user, id, result) => {
+  if (user && user.role === Role.amministratore) {
+    AssetModel.getOneAmm(id, (err, data) => {
+      if (err) {
+        return result(err, null);
+      }
+  
+      return result(null, data);
+    });
+  } else {
+    AssetModel.getOne(id, (err, data) => {
+      if (err) {
+        return result(err, null);
+      }
+  
+      return result(null, data);
+    });
+  }
 }
 
 /**
