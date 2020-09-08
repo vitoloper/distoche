@@ -1,5 +1,7 @@
+const env = process.env.NODE_ENV || 'dev';
+
 const mysql = require("mysql");
-const dbConfig = require("../config/db.config.js");
+const dbConfig = require(`../config/db.config.${env}.js`);
 const logger = require("../config/winston");
 
 // Create a pool
